@@ -11,4 +11,6 @@ Route::group([
     Route::resource("products.variations", "ProductVariationController")
         ->except("show", "edit", "create")
         ->shallow();
+    Route::put("/variations/{variation}/disable", "ProductVariationController@disable")
+        ->name("variations.disable");
 });

@@ -90,7 +90,7 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
         [
             "title" => "Вариации",
             "slug" => "product-variations",
-            "policy" => "ProductVariation",
+            "policy" => "ProductVariationPolicy",
         ]
     ];
 

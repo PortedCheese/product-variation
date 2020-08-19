@@ -3,6 +3,7 @@
 namespace PortedCheese\ProductVariation\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class ProductVariation extends JsonResource
 {
@@ -14,12 +15,15 @@ class ProductVariation extends JsonResource
      */
     public function toArray($request)
     {
+        $model = $this->resource;
         $array = parent::toArray($request);
-        $array['human_price'] = $this->human_price;
-        $array['human_sale_price'] = $this->human_sale_price;
+        $array['human_price'] = $model->human_price;
+        $array['human_sale_price'] = $model->human_sale_price;
         if (strstr($request->route()->getName(), "admin") !== false) {
-            $array["deleteUrl"] = route("admin.variations.destroy", ["variation" => $this]);
-            $array["updateUrl"] = route("admin.variations.update", ["variation" => $this]);
+            $user = Auth::user();
+            $array["deleteUrl"] = $user->can("delete", $model) ? route("admin.variations.destroy", ["variation" => $model]) : false;
+            $array["updateUrl"] = $user->can("update", $model) ? route("admin.variations.update", ["variation" => $model]) : false;
+            $array["disableUrl"] = $user->can("disable", $model) ? route("admin.variations.disable", ["variation" => $model]) : false;
         }
         return $array;
     }

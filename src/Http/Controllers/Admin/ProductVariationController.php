@@ -129,4 +129,23 @@ class ProductVariationController extends Controller
                 "message" => "Вариация успешно удалена",
             ]);
     }
+
+    /**
+     * Отключение/включение вариации.
+     *
+     * @param ProductVariation $variation
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function disable(ProductVariation $variation)
+    {
+        $this->authorize("disable", $variation);
+        $variation->disabled_at = $variation->disabled_at ? null : now();
+        $variation->save();
+        return response()
+            ->json([
+                "success" => true,
+                "message" => "Статус вариации изменен",
+            ]);
+    }
 }
