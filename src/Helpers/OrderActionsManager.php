@@ -5,10 +5,76 @@ namespace PortedCheese\ProductVariation\Helpers;
 
 
 use App\Order;
+use App\OrderItem;
 use App\OrderState;
+use App\ProductVariation;
 
 class OrderActionsManager
 {
+    /**
+     * Добавить вариации к заказу.
+     *
+     * @param Order $order
+     * @param array $variationsInfo
+     */
+    public function addVariationsToOrder(Order $order, array $variationsInfo)
+    {
+        $ids = array_keys($variationsInfo);
+        $orderItems = OrderItem::query()
+            ->where("order_id", $order->id)
+            ->whereIn("variation_id", $ids)
+            ->get();
+        foreach ($orderItems as $orderItem) {
+            /**
+             * @var OrderItem $orderItem
+             */
+            $id = $orderItem->id;
+            $quantity = $variationsInfo[$id];
+            unset($variationsInfo[$id]);
+            $orderItem->increaseQuantity($quantity);
+        }
+
+        foreach ($variationsInfo as $id => $quantity) {
+            $this->addItemToOrder($order, $id, $quantity);
+        }
+    }
+
+    /**
+     * Добавить позицию в заказ.
+     *
+     * @param Order $order
+     * @param $variation
+     * @param int $quantity
+     * @return bool|\Illuminate\Database\Eloquent\Model|OrderItem
+     */
+    public function addItemToOrder(Order $order, $variation, $quantity = 1)
+    {
+        if (is_numeric($variation)) {
+            try {
+                $variation = ProductVariation::findOrFail($variation);
+            }
+            catch (\Exception $exception) {
+                return false;
+            }
+        }
+        $productId = $variation->product_id;
+
+        try {
+            $orderItem = $order->items()->create([
+                "sku" => $variation->sku,
+                "price" => $variation->price,
+                "quantity" => $quantity,
+                "description" => $variation->description,
+                "product_id" => $productId,
+                "variation_id" => $variation->id,
+            ]);
+        } catch (\Exception $exception) {
+            return false;
+        }
+
+        return $orderItem;
+    }
+
     /**
      * Получить статус заказа Новый
      *

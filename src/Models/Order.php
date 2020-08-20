@@ -36,8 +36,23 @@ class Order extends Model
         return $this->belongsTo(\App\OrderState::class, "state_id");
     }
 
+    /**
+     * Пользователь.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Позиции заказа.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function items()
+    {
+        return $this->hasMany(\App\OrderItem::class);
     }
 }

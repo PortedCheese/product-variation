@@ -2,14 +2,14 @@
 
 namespace PortedCheese\ProductVariation;
 
+use App\Observers\Vendor\ProductVariation\OrderItemObserver;
 use App\Observers\Vendor\ProductVariation\OrderObserver;
 use App\Observers\Vendor\ProductVariation\OrderStateObserver;
 use App\Observers\Vendor\ProductVariation\ProductVariationObserver;
 use App\Order;
+use App\OrderItem;
 use App\OrderState;
-use App\Product;
 use App\ProductVariation;
-use Illuminate\Support\Facades\Blade;
 use PortedCheese\ProductVariation\Console\Commands\ProductVariationMakeCommand;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -118,6 +118,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         if (class_exists(OrderObserver::class) && class_exists(Order::class)) {
             Order::observe(OrderObserver::class);
+        }
+
+        if (class_exists(OrderItemObserver::class) && class_exists(OrderItem::class)) {
+            OrderItem::observe(OrderItemObserver::class);
         }
     }
 }

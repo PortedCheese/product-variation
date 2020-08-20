@@ -8,16 +8,26 @@ use App\ProductVariation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use PortedCheese\ProductVariation\Events\CreateNewOrder;
+use PortedCheese\ProductVariation\Facades\OrderActions;
 
 class OrderController extends Controller
 {
+    /**
+     * Заказ одного товара.
+     *
+     * @param Request $request
+     * @param ProductVariation $variation
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function newSingle(Request $request, ProductVariation $variation)
     {
         $this->newSingleValidator($request->all());
         $order = Order::create([
             "user_data" => $request->all(),
         ]);
-        // TODO: Add variation
+        OrderActions::addVariationsToOrder($order, [
+            $variation->id => 1,
+        ]);
         event(new CreateNewOrder($order));
         return response()
             ->json([
@@ -26,6 +36,9 @@ class OrderController extends Controller
             ]);
     }
 
+    /**
+     * @param array $data
+     */
     protected function newSingleValidator(array $data)
     {
         Validator::make($data, [
