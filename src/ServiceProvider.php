@@ -2,7 +2,9 @@
 
 namespace PortedCheese\ProductVariation;
 
+use App\Observers\Vendor\ProductVariation\OrderStateObserver;
 use App\Observers\Vendor\ProductVariation\ProductVariationObserver;
+use App\OrderState;
 use App\Product;
 use App\ProductVariation;
 use Illuminate\Support\Facades\Blade;
@@ -88,6 +90,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         if (config("product-variation.productVariationAdminRoutes")) {
             $this->loadRoutesFrom(__DIR__ . "/routes/admin/product-variation.php");
         }
+        // Управление статусами заказов.
+        if (config("product-variation.orderStatesAdminRoutes")) {
+            $this->loadRoutesFrom(__DIR__ . "/routes/admin/order-state.php");
+        }
     }
 
     /**
@@ -97,6 +103,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         if (class_exists(ProductVariationObserver::class) && class_exists(ProductVariation::class)) {
             ProductVariation::observe(ProductVariationObserver::class);
+        }
+
+        if (class_exists(OrderStateObserver::class) && class_exists(OrderState::class)) {
+            OrderState::observe(OrderStateObserver::class);
         }
     }
 }

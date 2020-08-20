@@ -40,7 +40,7 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
      * @var array
      */
     protected $models = [
-        "ProductVariation",
+        "ProductVariation", "OrderState",
     ];
 
     /**
@@ -50,7 +50,7 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
      */
     protected $controllers = [
         "Admin" => [
-            "ProductVariationController",
+            "ProductVariationController", "OrderStateController",
         ],
         "Site" => [
             "OrderController",
@@ -62,7 +62,7 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
      *
      * @var array
      */
-    protected $observers = ["ProductVariationObserver"];
+    protected $observers = ["ProductVariationObserver", "OrderStateObserver"];
 
     /**
      * Папка для vue файлов.
@@ -95,6 +95,11 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
             "title" => "Вариации",
             "slug" => "product-variations",
             "policy" => "ProductVariationPolicy",
+        ],
+        [
+            "title" => "Статусы заказов",
+            "slug" => "order-states",
+            "policy" => "OrderStatePolicy",
         ]
     ];
 

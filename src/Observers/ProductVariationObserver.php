@@ -15,4 +15,9 @@ class ProductVariationObserver
     {
         $variation->fixSku();
     }
+
+    public function updating(ProductVariation $variation)
+    {
+        $variation->fixSku(true);
+    }
 }

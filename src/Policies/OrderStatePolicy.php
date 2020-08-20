@@ -6,7 +6,7 @@ use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use PortedCheese\BaseSettings\Traits\InitPolicy;
 
-class ProductVariationPolicy
+class OrderStatePolicy
 {
     use HandlesAuthorization;
     use InitPolicy {
@@ -18,11 +18,10 @@ class ProductVariationPolicy
     const CREATE = 8;
     const UPDATE = 16;
     const DELETE = 32;
-    const DISABLE = 64;
 
     public function __construct()
     {
-        $this->__ipoConstruct("ProductVariationPolicy");
+        $this->__ipoConstruct("OrderStatePolicy");
     }
 
     /**
@@ -38,7 +37,6 @@ class ProductVariationPolicy
             self::CREATE => "Добавление",
             self::UPDATE => "Обновление",
             self::DELETE => "Удаление",
-            self::DISABLE => "Отключение",
         ];
     }
 
@@ -49,7 +47,7 @@ class ProductVariationPolicy
      */
     public static function defaultRules()
     {
-        return self::VIEW_ALL + self::VIEW + self::CREATE + self::UPDATE + self::DELETE + self::DISABLE;
+        return self::VIEW_ALL + self::VIEW + self::CREATE + self::UPDATE + self::DELETE;
     }
 
     /**
@@ -105,16 +103,5 @@ class ProductVariationPolicy
     public function delete(User $user)
     {
         return $user->hasPermission($this->model, self::DELETE);
-    }
-
-    /**
-     * Отключение.
-     *
-     * @param User $user
-     * @return bool
-     */
-    public function disable(User $user)
-    {
-        return $user->hasPermission($this->model, self::DISABLE);
     }
 }
