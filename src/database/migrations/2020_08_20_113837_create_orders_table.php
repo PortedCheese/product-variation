@@ -30,7 +30,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger("state_id")
                 ->comment("Статус заказа");
 
-            $table->decimal("total")
+            $table->unsignedDecimal("total")
                 ->default(0)
                 ->comment("Сумма");
 

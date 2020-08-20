@@ -22,15 +22,15 @@ class CreateOrderItemsTable extends Migration
             $table->string("sku")
                 ->comment("Артикул вариации");
 
-            $table->decimal("price")
+            $table->unsignedDecimal("price")
                 ->default(0)
                 ->comment("Цена");
 
-            $table->integer("quantity")
+            $table->unsignedInteger("quantity")
                 ->default(1)
                 ->comment("Количество");
 
-            $table->decimal("total")
+            $table->unsignedDecimal("total")
                 ->default(0)
                 ->comment("Сумма");
 

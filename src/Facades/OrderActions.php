@@ -11,6 +11,8 @@ use PortedCheese\ProductVariation\Helpers\OrderActionsManager;
 
 /**
  * @method static addVariationsToOrder(Order $order, array $variationsInfo)
+ * @method static increaseOrderItemQuantity(OrderItem $orderItem, int $quantity)
+ * @method static decreaseOrderItemQuantity(OrderItem $orderItem, int $quantity)
  * @method static bool|Model|OrderItem addItemToOrder(Order $order, $variation, $quantity = 1)
  * @method static OrderState getNewState()
  * @method static string generateUniqueNumber($letter = true, $length = 8)

@@ -36,33 +36,4 @@ class OrderItem extends Model
     {
         return $this->belongsTo(\App\Product::class);
     }
-
-    /**
-     * Увеличить количество.
-     *
-     * @param $quantity
-     * @return bool
-     */
-    public function increaseQuantity($quantity)
-    {
-        $this->quantity += $quantity;
-        $this->save();
-        return true;
-    }
-
-    /**
-     * Уменьшить количество.
-     *
-     * @param $quantity
-     * @return bool
-     */
-    public function decreaseQuantity($quantity)
-    {
-        if ($this->quantity > $quantity) {
-            $this->quantity -= $quantity;
-            $this->save();
-            return true;
-        }
-        return false;
-    }
 }

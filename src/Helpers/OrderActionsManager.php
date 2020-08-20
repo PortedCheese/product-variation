@@ -31,12 +31,41 @@ class OrderActionsManager
             $id = $orderItem->id;
             $quantity = $variationsInfo[$id];
             unset($variationsInfo[$id]);
-            $orderItem->increaseQuantity($quantity);
+            $this->increaseOrderItemQuantity($orderItem, $quantity);
         }
 
         foreach ($variationsInfo as $id => $quantity) {
             $this->addItemToOrder($order, $id, $quantity);
         }
+    }
+
+    /**
+     * Увеличить количество позиции заказа.
+     *
+     * @param OrderItem $orderItem
+     * @param int $quantity
+     */
+    public function increaseOrderItemQuantity(OrderItem $orderItem, int $quantity)
+    {
+        $orderItem->quantity += $quantity;
+        $orderItem->save();
+    }
+
+    /**
+     * Уменьшить количество позиции заказа.
+     *
+     * @param OrderItem $orderItem
+     * @param int $quantity
+     */
+    public function decreaseOrderItemQuantity(OrderItem $orderItem, int $quantity)
+    {
+        if ($orderItem->quantity > $quantity) {
+            $orderItem->quantity -= $quantity;
+        }
+        else {
+            $orderItem->quantity = 0;
+        }
+        $orderItem->save();
     }
 
     /**

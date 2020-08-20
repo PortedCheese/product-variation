@@ -23,10 +23,10 @@ class CreateProductVariationsTable extends Migration
                 ->unique()
                 ->comment("Артикул");
 
-            $table->decimal("price")
+            $table->unsignedDecimal("price")
                 ->comment("Цена");
 
-            $table->decimal("sale_price")
+            $table->unsignedDecimal("sale_price")
                 ->nullable()
                 ->comment("Цена со скидкой");
 
