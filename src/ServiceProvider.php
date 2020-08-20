@@ -70,6 +70,20 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function addRoutes()
     {
+        $this->addAdminRoutes();
+        $this->addSiteRoutes();
+    }
+
+    protected function addSiteRoutes()
+    {
+        // Управление вариациями.
+        if (config("product-variation.ordersSiteRoutes")) {
+            $this->loadRoutesFrom(__DIR__ . "/routes/site/order.php");
+        }
+    }
+
+    protected function addAdminRoutes()
+    {
         // Управление вариациями.
         if (config("product-variation.productVariationAdminRoutes")) {
             $this->loadRoutesFrom(__DIR__ . "/routes/admin/product-variation.php");

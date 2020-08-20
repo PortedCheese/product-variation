@@ -52,7 +52,9 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
         "Admin" => [
             "ProductVariationController",
         ],
-        "Site" => [],
+        "Site" => [
+            "OrderController",
+        ],
     ];
 
     /**
@@ -78,7 +80,9 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
         'admin' => [
             "admin-variation-list" => "ProductVariationListComponent",
         ],
-        'app' => [],
+        'app' => [
+            "order-single" => "OrderSingleProductComponent",
+        ],
     ];
 
     /**
@@ -127,7 +131,7 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
 
         if ($this->option("controllers") || $all) {
             $this->exportControllers("Admin");
-//            $this->exportControllers("Site");
+            $this->exportControllers("Site");
         }
 
         if ($this->option("observers") || $all) {
@@ -136,7 +140,7 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
 
         if ($this->option("vue") || $all) {
             $this->makeVueIncludes("admin");
-//            $this->makeVueIncludes("app");
+            $this->makeVueIncludes("app");
         }
 
         if ($this->option("policies") || $all) {

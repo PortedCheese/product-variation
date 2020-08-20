@@ -25,6 +25,9 @@ class ProductVariation extends JsonResource
             $array["updateUrl"] = $user->can("update", $model) ? route("admin.variations.update", ["variation" => $model]) : false;
             $array["disableUrl"] = $user->can("disable", $model) ? route("admin.variations.disable", ["variation" => $model]) : false;
         }
+        else {
+            $array["orderSingleUrl"] = route("catalog.orders.single", ["variation" => $model]);
+        }
         return $array;
     }
 }

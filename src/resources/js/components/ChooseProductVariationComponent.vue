@@ -1,0 +1,93 @@
+<template>
+    <div class="form-group">
+        <div v-if="variationData">
+            <h4>
+                <span class="text-primary">{{ variationData.price }} руб.</span>
+                <span v-if="variationData.sale"><del>{{ variationData.sale_price }}</del> руб. </span>
+                <template v-if="variations.length === 1">
+                    <br>
+                    <span>{{ variationData.description }}</span>
+                </template>
+            </h4>
+        </div>
+
+        <div class="custom-control custom-radio"
+             :class="variations.length <= 1 && variationData ? 'd-none' : ''"
+             v-for="variation in variations">
+            <input type="radio"
+                   :id="'customRadio' + variation.id"
+                   name="customRadio"
+                   v-model="chosenVariation"
+                   :value="variation.id"
+                   :disabled="variation.disabled_at"
+                   @change="$emit('change', chosenVariation)"
+                   class="custom-control-input">
+            <label class="custom-control-label"
+                   :for="'customRadio' + variation.id">
+                {{ variation.description }}<span class="text-danger" v-if="variation.disabled_at"> нет в наличии</span>
+            </label>
+        </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "ChooseProductVariationComponent",
+
+        model: {
+            prop: "chosen",
+            event: "change"
+        },
+
+        props: {
+            variations: {
+                type: Array,
+                required: true
+            },
+
+            chosen: {
+                type: Number|String,
+                required: true
+            }
+        },
+
+        data() {
+            return {
+                chosenVariation: "",
+            }
+        },
+
+        created() {
+            this.chosenVariation = this.chosen;
+            if (! this.chosenVariation && this.variations.length) {
+                for (let item in this.variations) {
+                    if (this.variations.hasOwnProperty(item)) {
+                        if (! this.variations[item].disabled_at) {
+                            this.chosenVariation = this.variations[item].id;
+                            this.$emit("change", this.chosenVariation);
+                            break;
+                        }
+                    }
+                }
+            }
+        },
+
+        computed: {
+            variationData() {
+                let variation = false;
+                for (let item in this.variations) {
+                    if (this.variations.hasOwnProperty(item)) {
+                        if (this.variations[item].id === this.chosenVariation) {
+                            variation = this.variations[item];
+                        }
+                    }
+                }
+                return variation;
+            }
+        }
+    }
+</script>
+
+<style scoped>
+
+</style>
