@@ -64,7 +64,7 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
      */
     protected $observers = [
         "ProductVariationObserver", "OrderStateObserver",
-        "OrderObserver", "OrderItemObserver",
+        "OrderObserver", "OrderItemObserver", "ProductObserver",
     ];
 
     /**

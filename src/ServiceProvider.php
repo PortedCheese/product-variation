@@ -9,8 +9,10 @@ use App\Observers\Vendor\ProductVariation\ProductVariationObserver;
 use App\Order;
 use App\OrderItem;
 use App\OrderState;
+use App\Product;
 use App\ProductVariation;
 use PortedCheese\ProductVariation\Console\Commands\ProductVariationMakeCommand;
+use PortedCheese\ProductVariation\Observers\ProductObserver;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -122,6 +124,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         if (class_exists(OrderItemObserver::class) && class_exists(OrderItem::class)) {
             OrderItem::observe(OrderItemObserver::class);
+        }
+
+        if (class_exists(ProductObserver::class) && class_exists(Product::class)) {
+            Product::observe(ProductObserver::class);
         }
     }
 }
