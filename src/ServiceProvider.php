@@ -2,8 +2,10 @@
 
 namespace PortedCheese\ProductVariation;
 
+use App\Observers\Vendor\ProductVariation\OrderObserver;
 use App\Observers\Vendor\ProductVariation\OrderStateObserver;
 use App\Observers\Vendor\ProductVariation\ProductVariationObserver;
+use App\Order;
 use App\OrderState;
 use App\Product;
 use App\ProductVariation;
@@ -65,6 +67,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             $class = config("product-variation.variationFacade");
             return new $class;
         });
+
+        $this->app->singleton("order-actions", function () {
+            $class = config("product-variation.orderFacade");
+            return new $class;
+        });
     }
 
     /**
@@ -107,6 +114,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         if (class_exists(OrderStateObserver::class) && class_exists(OrderState::class)) {
             OrderState::observe(OrderStateObserver::class);
+        }
+
+        if (class_exists(OrderObserver::class) && class_exists(Order::class)) {
+            Order::observe(OrderObserver::class);
         }
     }
 }

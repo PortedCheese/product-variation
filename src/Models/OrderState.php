@@ -17,6 +17,16 @@ class OrderState extends Model
     ];
 
     /**
+     * Заказы.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders()
+    {
+        return $this->hasMany(\App\Order::class, "state_id");
+    }
+
+    /**
      * Значение ключа.
      *
      * @param bool $updating
