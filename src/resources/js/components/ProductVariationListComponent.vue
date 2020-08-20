@@ -1,5 +1,5 @@
 <template>
-    <div class="col-12 mt-2">
+    <div class="col-12 mb-2">
         <div class="card">
             <add-new :post-url="postUrl" v-on:add-new-variation="getList" v-if="canCreate"></add-new>
             <div class="card-header" v-else>

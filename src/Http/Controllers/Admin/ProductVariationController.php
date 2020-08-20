@@ -7,6 +7,7 @@ use App\Product;
 use App\ProductVariation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use PortedCheese\ProductVariation\Facades\ProductVariationActions;
 use PortedCheese\ProductVariation\Http\Resources\ProductVariation as VariationResource;
 
 class ProductVariationController extends Controller
@@ -27,14 +28,9 @@ class ProductVariationController extends Controller
      */
     public function index(Request $request, Product $product)
     {
-        $collection = $product
-            ->variations()
-            ->orderBy("disabled_at")
-            ->orderBy("price")
-            ->get();
         return response()
             ->json([
-                "items" => VariationResource::collection($collection)
+                "items" => ProductVariationActions::getVariationsByProduct($product)
             ]);
     }
 

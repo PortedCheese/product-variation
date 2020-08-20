@@ -5,6 +5,7 @@ namespace PortedCheese\ProductVariation;
 use App\Observers\Vendor\ProductVariation\ProductVariationObserver;
 use App\Product;
 use App\ProductVariation;
+use Illuminate\Support\Facades\Blade;
 use PortedCheese\ProductVariation\Console\Commands\ProductVariationMakeCommand;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
