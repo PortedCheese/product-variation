@@ -12,6 +12,21 @@ use App\ProductVariation;
 class OrderActionsManager
 {
     /**
+     * Пересчитать сумму заказа.
+     *
+     * @param Order $order
+     */
+    public function recalculateOrderTotal(Order $order)
+    {
+        $total = 0;
+        $items = $order->items()->select("total")->get();
+        foreach ($items as $item) {
+            $total += $item->total;
+        }
+        $order->total = $total;
+        $order->save();
+    }
+    /**
      * Добавить вариации к заказу.
      *
      * @param Order $order
@@ -37,6 +52,8 @@ class OrderActionsManager
         foreach ($variationsInfo as $id => $quantity) {
             $this->addItemToOrder($order, $id, $quantity);
         }
+
+        $this->recalculateOrderTotal($order);
     }
 
     /**

@@ -16,7 +16,10 @@ class OrderStateController extends Controller
      */
     public function index(Request $request)
     {
-        return view("product-variation::admin.order-states.index", compact("request"));
+        $states = OrderState::query()
+            ->orderBy("title")
+            ->get();
+        return view("product-variation::admin.order-states.index", compact("request", "states"));
     }
 
     /**
@@ -65,9 +68,14 @@ class OrderStateController extends Controller
      * @param  \App\OrderState  $state
      * @return \Illuminate\Http\Response
      */
-    public function show(OrderState $state)
+    public function show(Request $request, OrderState $state)
     {
-        return view("product-variation::admin.order-states.show", compact("state"));
+        $orders = $state->orders()
+            ->orderByDesc("created_at")
+            ->paginate()
+            ->appends($request->input());
+
+        return view("product-variation::admin.order-states.show", compact("state", "orders"));
     }
 
     /**

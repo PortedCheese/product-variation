@@ -16,6 +16,18 @@ class Order extends Model
         "user_data" => "array",
     ];
 
+    public static function getAttributesForRender()
+    {
+        return [
+            "name" => "Имя",
+            "email" => "E-mail",
+            "phone" => "Телефон",
+            "comment" => "Комментарий",
+            "user_id" => "Идентификатор пользователя",
+            "privacy_policy" => "Согласие с политикой конфиденциальности",
+        ];
+    }
+
     /**
      * Get the route key for the model.
      *
@@ -54,5 +66,50 @@ class Order extends Model
     public function items()
     {
         return $this->hasMany(\App\OrderItem::class);
+    }
+
+    /**
+     * Дата создания.
+     *
+     * @return \Carbon\Carbon|null
+     */
+    public function getCreatedHumanAttribute()
+    {
+        $created = $this->created_at;
+        $changed = datehelper()->changeTz($created);
+        return datehelper()->format($changed);
+    }
+
+    /**
+     * Имя пользователя.
+     *
+     * @return string
+     */
+    public function getUserNameAttribute()
+    {
+        $data = $this->user_data;
+        return ! empty($data["name"]) ? $data["name"] : "Не определено";
+    }
+
+    /**
+     * E-mail пользователя.
+     *
+     * @return bool|string
+     */
+    public function getUserEmailAttribute()
+    {
+        $data = $this->user_data;
+        return ! empty($data["email"]) ? $data["email"] : false;
+    }
+
+    /**
+     * Телефон пользователя.
+     *
+     * @return bool|string
+     */
+    public function getUserPhoneAttribute()
+    {
+        $data = $this->user_data;
+        return ! empty($data["phone"]) ? $data["phone"] : false;
     }
 }

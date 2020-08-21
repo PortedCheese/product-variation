@@ -103,6 +103,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         if (config("product-variation.orderStatesAdminRoutes")) {
             $this->loadRoutesFrom(__DIR__ . "/routes/admin/order-state.php");
         }
+        // Управление заказми.
+        if (config("product-variation.orderAdminRoutes")) {
+            $this->loadRoutesFrom(__DIR__ . "/routes/admin/order.php");
+        }
     }
 
     /**

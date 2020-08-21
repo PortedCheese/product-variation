@@ -42,7 +42,7 @@
                         @enderror
                     </div>
 
-                    @can("management")
+                    @can("settings-management")
                         <div class="form-group">
                             <label for="key">Key</label>
                             <input type="text"

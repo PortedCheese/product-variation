@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use PortedCheese\ProductVariation\Helpers\OrderActionsManager;
 
 /**
+ * @method static recalculateOrderTotal(Order $order)
  * @method static addVariationsToOrder(Order $order, array $variationsInfo)
  * @method static increaseOrderItemQuantity(OrderItem $orderItem, int $quantity)
  * @method static decreaseOrderItemQuantity(OrderItem $orderItem, int $quantity)

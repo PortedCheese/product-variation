@@ -50,7 +50,7 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
      */
     protected $controllers = [
         "Admin" => [
-            "ProductVariationController", "OrderStateController",
+            "ProductVariationController", "OrderStateController", "OrderController",
         ],
         "Site" => [
             "OrderController",

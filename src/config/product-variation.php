@@ -4,6 +4,7 @@ return [
     "productVariationAdminRoutes" => true,
     "ordersSiteRoutes" => true,
     "orderStatesAdminRoutes" => true,
+    "orderAdminRoutes" => true,
 
     // Facades.
     "variationFacade" => \PortedCheese\ProductVariation\Helpers\ProductVariationActionsManager::class,

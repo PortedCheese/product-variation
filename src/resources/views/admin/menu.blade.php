@@ -1,5 +1,6 @@
 @php
-    $active = (strstr($currentRoute, ".order-states.") !== false);
+    $active = (strstr($currentRoute, ".order-states.") !== false) ||
+              (strstr($currentRoute, ".orders.") !== false);
 @endphp
 
 @if ($theme == "sb-admin")
@@ -20,8 +21,14 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 @can("viewAny", \App\OrderState::class)
                     <a href="{{ route("admin.order-states.index") }}"
-                       class="collapse-item{{ strstr($currentRoute, ".categories.") !== false ? " active" : "" }}">
+                       class="collapse-item{{ strstr($currentRoute, ".order-states.") !== false ? " active" : "" }}">
                         <span>Статусы заказов</span>
+                    </a>
+                @endcan
+                @can("viewAny", \App\Order::class)
+                    <a href="{{ route("admin.orders.index") }}"
+                       class="collapse-item{{ strstr($currentRoute, ".orders.") !== false ? " active" : "" }}">
+                        <span>Заказы</span>
                     </a>
                 @endcan
             </div>
@@ -45,6 +52,12 @@
                 <a href="{{ route("admin.order-states.index") }}"
                    class="dropdown-item">
                     Статусы заказов
+                </a>
+            @endcan
+            @can("viewAny", \App\OrderState::class)
+                <a href="{{ route("admin.orders.index") }}"
+                   class="dropdown-item">
+                    Заказы
                 </a>
             @endcan
         </div>
