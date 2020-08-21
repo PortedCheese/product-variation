@@ -4,9 +4,13 @@ namespace PortedCheese\ProductVariation\Models;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use PortedCheese\ProductVariation\Notifications\NewOrderClient;
 
 class Order extends Model
 {
+    use Notifiable;
+
     protected $fillable = [
         "user_data",
         "total",
@@ -66,6 +70,17 @@ class Order extends Model
     public function items()
     {
         return $this->hasMany(\App\OrderItem::class);
+    }
+
+    /**
+     * Route notifications for the mail channel.
+     *
+     * @param $notification
+     * @return \Illuminate\Config\Repository|mixed
+     */
+    public function routeNotificationForMail($notification)
+    {
+        return config("product-variation.clientNotifyEmail");
     }
 
     /**

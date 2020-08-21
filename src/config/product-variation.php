@@ -13,4 +13,9 @@ return [
     // Order settings
     "orderNumberHasLetter" => true,
     "orderDigitsLength" => 8,
+
+    // New order notify
+    "clientNotifyEmail" => env("NEW_ORDER_NOTIFY_EMAIL", false),
+    "enableClientNotification" => true,
+    "enableUserNotification" => true,
 ];

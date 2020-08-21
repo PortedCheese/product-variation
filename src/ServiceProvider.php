@@ -12,6 +12,8 @@ use App\OrderState;
 use App\Product;
 use App\ProductVariation;
 use PortedCheese\ProductVariation\Console\Commands\ProductVariationMakeCommand;
+use PortedCheese\ProductVariation\Events\CreateNewOrder;
+use PortedCheese\ProductVariation\Listeners\SendNewOrderNotify;
 use PortedCheese\ProductVariation\Observers\ProductObserver;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -47,6 +49,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         // Наблюдатели.
         $this->addObservers();
+
+        // События.
+        $this->addEvents();
     }
 
     public function register()
@@ -133,5 +138,14 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         if (class_exists(ProductObserver::class) && class_exists(Product::class)) {
             Product::observe(ProductObserver::class);
         }
+    }
+
+    /**
+     * Подписки на события.
+     */
+    protected function addEvents()
+    {
+        // Создание заказа.
+        $this->app["events"]->listen(CreateNewOrder::class, SendNewOrderNotify::class);
     }
 }
