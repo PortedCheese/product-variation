@@ -2,8 +2,10 @@
 
 namespace PortedCheese\ProductVariation\Models;
 
+use App\Cart;
 use App\Product;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ProductVariation extends Model
 {
@@ -24,6 +26,23 @@ class ProductVariation extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    /**
+     * Корзины.
+     *
+     * @return BelongsToMany
+     */
+    public function carts()
+    {
+        if (class_exists(Cart::class)) {
+            return $this->belongsToMany(Cart::class)
+                ->withPivot("quantity")
+                ->withTimestamps();
+        }
+        else {
+            return new BelongsToMany($this->newQuery(), $this, "", "", "", "", "");
+        }
     }
 
     /**

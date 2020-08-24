@@ -2,8 +2,8 @@
     <div class="form-group">
         <div v-if="variationData">
             <h4>
-                <span class="text-primary">{{ variationData.price }} руб.</span>
-                <span v-if="variationData.sale"><del>{{ variationData.sale_price }}</del> руб. </span>
+                <span class="text-primary">{{ variationData.human_price }} руб.</span>
+                <span v-if="variationData.sale"><del>{{ variationData.human_sale_price }}</del> руб. </span>
                 <template v-if="variations.length === 1">
                     <br>
                     <span>{{ variationData.description }}</span>

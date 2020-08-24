@@ -6,6 +6,11 @@ use App\OrderItem;
 
 class OrderItemObserver
 {
+    /**
+     * Перед сохранением.
+     *
+     * @param OrderItem $orderItem
+     */
     public function creating(OrderItem $orderItem)
     {
         $orderItem->total = $orderItem->price * $orderItem->quantity;
@@ -13,6 +18,11 @@ class OrderItemObserver
         $orderItem->title = $product->title;
     }
 
+    /**
+     * Перед обновлением.
+     *
+     * @param OrderItem $orderItem
+     */
     public function updating(OrderItem $orderItem)
     {
         $orderItem->total = $orderItem->price * $orderItem->quantity;
