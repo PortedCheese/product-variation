@@ -76,6 +76,36 @@ class ProductVariation extends Model
     }
 
     /**
+     * Скидка.
+     *
+     * @return mixed
+     */
+    public function getDiscountAttribute()
+    {
+        if ($this->sale) {
+            return $this->sale_price - $this->price;
+        }
+        else {
+            return 0;
+        }
+    }
+
+    /**
+     * Формат скидки.
+     *
+     * @return string
+     */
+    public function getHumanDiscountAttribute()
+    {
+        if ($this->discount - intval($this->discount) > 0) {
+            return number_format($this->discount, 2, ",", " ");
+        }
+        else {
+            return number_format($this->discount, 0, ",", " ");
+        }
+    }
+
+    /**
      * Поправить артикул.
      *
      * @param bool $updating

@@ -19,6 +19,9 @@ class ProductVariation extends JsonResource
         $array = parent::toArray($request);
         $array['human_price'] = $model->human_price;
         $array['human_sale_price'] = $model->human_sale_price;
+        $array["discount"] = $model->discount;
+        $array["human_discount"] = $model->human_discount;
+
         if (strstr($request->route()->getName(), "admin") !== false) {
             $user = Auth::user();
             $array["deleteUrl"] = $user->can("delete", $model) ? route("admin.variations.destroy", ["variation" => $model]) : false;
