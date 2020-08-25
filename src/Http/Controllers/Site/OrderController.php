@@ -45,12 +45,14 @@ class OrderController extends Controller
             "name" => ["required", "max:250"],
             "email" => ["nullable", "required_without:phone", "email", "max:250"],
             "phone" => ["nullable", "required_without:email", "max:250"],
+            "privacy_policy" => ["accepted"],
         ], [
             'name.required' => 'Поле :attribute обязательно для заполнения',
             'name.max' => "Поле :attribute должно быть максимум :min символа",
             'email.required_without' => "Поле :attribute обязательно когда :values не заполнено.",
             'email.email' => "Поле :attribute должно быть валидным e-mail адресом",
             'phone.required_without' => "Поле :attribute обязательно когда :values не заполнено.",
+            "privacy_policy.accepted" => "Требуется согласие с политикой конфиденциальности",
         ], [
             "name" => "Имя",
             "email" => "E-mail",

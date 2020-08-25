@@ -20,6 +20,9 @@ class CreateOrdersTable extends Migration
                 ->unique()
                 ->comment("Номер заказа");
 
+            $table->uuid("uuid")
+                ->comment("Идентификатор заказа");
+
             $table->unsignedBigInteger("user_id")
                 ->nullable()
                 ->comment("Пользователь");

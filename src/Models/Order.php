@@ -5,7 +5,6 @@ namespace PortedCheese\ProductVariation\Models;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
-use PortedCheese\ProductVariation\Notifications\NewOrderClient;
 
 class Order extends Model
 {

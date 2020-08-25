@@ -5,6 +5,7 @@ namespace PortedCheese\ProductVariation\Observers;
 use App\Order;
 use App\OrderItem;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use PortedCheese\ProductVariation\Facades\OrderActions;
 
 class OrderObserver
@@ -20,6 +21,8 @@ class OrderObserver
             config("product-variation.orderNumberHasLetter"),
             config("product-variation.orderDigitsLength")
         );
+
+        $order->uuid = Str::uuid();
 
         if (Auth::check()) {
             $order->user_id = Auth::id();
