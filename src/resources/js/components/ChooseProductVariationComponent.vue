@@ -1,5 +1,5 @@
 <template>
-    <div class="form-group">
+    <div class="form-group" v-if="showChoose">
         <div v-if="variationData">
             <h4>
                 <span class="text-primary">{{ variationData.human_price }} руб.</span>
@@ -48,6 +48,11 @@
             chosen: {
                 type: Number|String,
                 required: true
+            },
+
+            showChoose: {
+                type: Boolean,
+                default: true
             }
         },
 

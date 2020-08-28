@@ -1,0 +1,46 @@
+.variation-price {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+
+  &__value {
+    &-text {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    display: inline-block;
+    font-size: 1.125rem;
+    font-weight: $font-weight-bolder;
+    margin-right: $grid-gutter-width / 2;
+    &_thin {
+      font-size: .875rem;
+      font-weight: $font-weight-light;
+      color: $gray-500;
+      position: relative;
+      margin-right: 0;
+      &:before {
+        content: '';
+        width: 100%;
+        height: 1px;
+        background-color: $gray-500;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 55%;
+      }
+    }
+  }
+
+  &__rub {
+    fill: currentColor;
+    width: 12px;
+    height: 13px;
+    margin-left: .25rem;
+    &_thin {
+      width: 9px;
+      height: 10px;
+    }
+  }
+}

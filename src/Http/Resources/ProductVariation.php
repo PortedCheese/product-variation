@@ -30,7 +30,7 @@ class ProductVariation extends JsonResource
         }
         else {
             $array["orderSingleUrl"] = route("catalog.orders.single", ["variation" => $model]);
-            if (config("variation-cart")) {
+            if (config("variation-cart.enableCart")) {
                 $array["addToCartUrl"] = route("catalog.cart.add", ["variation" => $model]);
             }
         }

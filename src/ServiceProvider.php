@@ -36,15 +36,18 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             ]);
         }
 
-        // Подключение путей.
-        $this->addRoutes();
+        if (config("product-variation.enableVariations")) {
+            // Подключение путей.
+            $this->addRoutes();
 
-        // Подключение шаблонов.
-        $this->loadViewsFrom(__DIR__ . "/resources/views", "product-variation");
+            // Подключение шаблонов.
+            $this->loadViewsFrom(__DIR__ . "/resources/views", "product-variation");
+        }
 
         // Assets.
         $this->publishes([
-            __DIR__ . "/resources/js/components" => resource_path("js/components/vendor/product-variation")
+            __DIR__ . "/resources/js/components" => resource_path("js/components/vendor/product-variation"),
+            __DIR__ . "/resources/sass" => resource_path("sass/vendor/product-variation")
         ], "public");
 
         // Наблюдатели.
@@ -52,6 +55,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         // События.
         $this->addEvents();
+
+        // Расширить конфиг сайта.
+        $this->extendConfigVariables();
     }
 
     public function register()
@@ -79,6 +85,14 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             $class = config("product-variation.orderFacade");
             return new $class;
         });
+    }
+
+    protected function extendConfigVariables()
+    {
+        // SVG
+        $svg = app()->config["theme.configSvg"];
+        $svg[] = "product-variation::site.includes.svg";
+        app()->config["theme.configSvg"] = $svg;
     }
 
     /**

@@ -10,6 +10,7 @@ use PortedCheese\ProductVariation\Helpers\ProductVariationActionsManager;
 
 /**
  * @method static Collection|AnonymousResourceCollection getVariationsByProduct(Product $product, $getCollection = false)
+ * @method static clearProductVariationsCache(Product $product)
  * @method static object|bool getUserForVariation()
  *
  * @see ProductVariationActionsManager

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    "enableVariations" => true,
     "productVariationAdminRoutes" => true,
     "ordersSiteRoutes" => true,
     "orderStatesAdminRoutes" => true,
@@ -18,4 +19,7 @@ return [
     "clientNotifyEmail" => env("NEW_ORDER_NOTIFY_EMAIL", false),
     "enableClientNotification" => true,
     "enableUserNotification" => true,
+
+    // Sort
+    "enablePriceSort" => true,
 ];

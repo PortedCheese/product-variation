@@ -85,6 +85,7 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
         ],
         'app' => [
             "order-single" => "OrderSingleProductComponent",
+            "teaser-price" => "ProductTeaserPriceComponent",
         ],
     ];
 
@@ -117,7 +118,9 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
      * @var array 
      */
     protected $scssIncludes = [
-        "app" => [],
+        "app" => [
+            "product-variation/variation-price",
+        ],
         "admin" => [],
     ];
 
@@ -161,7 +164,7 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
         }
 
         if ($this->option("scss") || $all) {
-//            $this->makeScssIncludes("app");
+            $this->makeScssIncludes("app");
 //            $this->makeScssIncludes("admin");
         }
     }
