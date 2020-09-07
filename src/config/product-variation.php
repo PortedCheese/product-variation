@@ -10,6 +10,7 @@ return [
     // Facades.
     "variationFacade" => \PortedCheese\ProductVariation\Helpers\ProductVariationActionsManager::class,
     "orderFacade" => \PortedCheese\ProductVariation\Helpers\OrderActionsManager::class,
+    "variationFilterFacade" => \PortedCheese\ProductVariation\Helpers\ProductVariationFilterManager::class,
 
     // Order settings
     "orderNumberHasLetter" => true,
@@ -20,6 +21,8 @@ return [
     "enableClientNotification" => true,
     "enableUserNotification" => true,
 
-    // Sort
+    // Filter
+    "enablePriceFilter" => true,
+    "priceFilterKey" => "product_price",
     "enablePriceSort" => true,
 ];
