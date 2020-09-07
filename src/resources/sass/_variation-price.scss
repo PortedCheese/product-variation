@@ -43,4 +43,9 @@
       height: 10px;
     }
   }
+
+  &__description {
+    color: $gray-500;
+    font-size: .875rem;
+  }
 }
