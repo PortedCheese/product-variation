@@ -97,20 +97,24 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         // Filters.
         if (config("product-variation.enablePriceSort")) {
             $filters = app()->config["category-product.sortOptions"];
-            $filters["price.desc"] = (object) [
-                "title" => "Сначала дорогие",
-                "by" => "price",
-                "direction" => "desc",
-                "ico" => "catalog-sort-amount",
-                "arrow" => "down",
-            ];
-            $filters["price.asc"] = (object) [
-                "title" => "Сначала дешевые",
-                "by" => "price",
-                "direction" => "asc",
-                "ico" => "catalog-sort-amount",
-                "arrow" => "up",
-            ];
+            if (empty($filters["price.desc"])) {
+                $filters["price.desc"] = (object) [
+                    "title" => "Сначала дорогие",
+                    "by" => "price",
+                    "direction" => "desc",
+                    "ico" => "catalog-sort-amount",
+                    "arrow" => "down",
+                ];
+            }
+            if (empty($filters["price.asc"])) {
+                $filters["price.asc"] = (object) [
+                    "title" => "Сначала дешевые",
+                    "by" => "price",
+                    "direction" => "asc",
+                    "ico" => "catalog-sort-amount",
+                    "arrow" => "up",
+                ];
+            }
             app()->config["category-product.sortOptions"] = $filters;
         }
     }

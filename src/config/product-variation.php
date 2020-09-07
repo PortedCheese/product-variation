@@ -10,7 +10,6 @@ return [
     // Facades.
     "variationFacade" => \PortedCheese\ProductVariation\Helpers\ProductVariationActionsManager::class,
     "orderFacade" => \PortedCheese\ProductVariation\Helpers\OrderActionsManager::class,
-    "variationFilterFacade" => \PortedCheese\ProductVariation\Helpers\ProductVariationFilterManager::class,
 
     // Order settings
     "orderNumberHasLetter" => true,
