@@ -150,7 +150,9 @@ class ProductVariationActionsManager
             ->select("price", "product_id", DB::raw("count(product_id) as count"), DB::raw("min(price) as minimal"))
             ->whereNull("disabled_at");
         if ($needBetween && ! empty($range["from"]) && ! empty($range["to"])) {
-            $query->whereBetween("price", [$range["from"], $range["to"] + 1]);
+            $from = $range["from"];
+            $to = $range["to"];
+            $query->whereBetween("price", [$from, $to + 1]);
         }
         return $query->orderBy("price")
             ->groupBy("product_id");

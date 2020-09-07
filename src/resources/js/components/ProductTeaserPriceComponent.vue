@@ -27,7 +27,7 @@
         </div>
 
         <a :href="productUrl"
-           v-if="variationData && variationsMoreCount > 1"
+           v-if="variationData && variationsMoreCount >= 1"
            class="variation-price__more">
             Еще {{ variationsMoreCount }} {{ variationMoreText }}
         </a>
