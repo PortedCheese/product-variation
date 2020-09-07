@@ -25,4 +25,5 @@ return [
     "enablePriceFilter" => true,
     "priceFilterKey" => "product_price",
     "enablePriceSort" => true,
+    "priceSortReplaceNull" => 1000000000,
 ];
