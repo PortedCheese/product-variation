@@ -48,4 +48,10 @@
     color: $gray-500;
     font-size: .875rem;
   }
+
+  &__more {
+    @include hover() {
+      text-decoration: none;
+    }
+  }
 }
