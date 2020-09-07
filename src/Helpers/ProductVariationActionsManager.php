@@ -147,7 +147,7 @@ class ProductVariationActionsManager
     public function getPriceQuery(array $range, bool $needBetween = true)
     {
         $query = DB::table("product_variations")
-            ->select("price", "product_id", DB::raw("count(product_id) as count"))
+            ->select("price", "product_id", DB::raw("count(product_id) as count"), DB::raw("min(price) as minimal"))
             ->whereNull("disabled_at");
         if ($needBetween && ! empty($range["from"]) && ! empty($range["to"])) {
             $query->whereBetween("price", [$range["from"], $range["to"] + 1]);

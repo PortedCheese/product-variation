@@ -93,6 +93,26 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $svg = app()->config["theme.configSvg"];
         $svg[] = "product-variation::site.includes.svg";
         app()->config["theme.configSvg"] = $svg;
+
+        // Filters.
+        if (config("product-variation.enablePriceSort")) {
+            $filters = app()->config["category-product.sortOptions"];
+            $filters["price.desc"] = (object) [
+                "title" => "Сначала дорогие",
+                "by" => "price",
+                "direction" => "desc",
+                "ico" => "catalog-sort-amount",
+                "arrow" => "down",
+            ];
+            $filters["price.asc"] = (object) [
+                "title" => "Сначала дешевые",
+                "by" => "price",
+                "direction" => "asc",
+                "ico" => "catalog-sort-amount",
+                "arrow" => "up",
+            ];
+            app()->config["category-product.sortOptions"] = $filters;
+        }
     }
 
     /**
