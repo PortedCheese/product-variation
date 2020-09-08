@@ -34,6 +34,9 @@
                class="variation-price__more">
                 Еще {{ variationsMoreCount }} {{ variationMoreText }}
             </a>
+            <span v-else class="variation-price__more variation-price__more_hidden">
+                &nbsp;
+            </span>
         </div>
     </div>
 </template>
