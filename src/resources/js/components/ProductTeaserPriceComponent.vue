@@ -2,8 +2,8 @@
     <div class="variation-price">
         <product-variations :variations="variations" v-model="chosenVariation" :show-choose="false"></product-variations>
 
-        <div v-if="variationData">
-            <div>
+        <div v-if="variationData" class="variation-price__wrapper">
+            <div class="variation-price__prices">
                 <div class="variation-price__value">
                     <span class="variation-price__value-text">
                         {{ variationData.human_price }}
@@ -26,11 +26,15 @@
             </div>
         </div>
 
-        <a :href="productUrl"
-           v-if="variationData && variationsMoreCount >= 1"
-           class="variation-price__more">
-            Еще {{ variationsMoreCount }} {{ variationMoreText }}
-        </a>
+        <div class="variation-price__bottom">
+            <slot v-if="variationData" :variation="variationData"></slot>
+
+            <a :href="productUrl"
+               v-if="variationData && variationsMoreCount >= 1"
+               class="variation-price__more">
+                Еще {{ variationsMoreCount }} {{ variationMoreText }}
+            </a>
+        </div>
     </div>
 </template>
 

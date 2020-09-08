@@ -54,4 +54,32 @@
       text-decoration: none;
     }
   }
+
+  &__btn {
+    margin: .5rem auto;
+    &-wrapper {
+      width: 100%;
+    }
+  }
+}
+.products-grid_list .variation-price {
+  @include media-breakpoint-up(md) {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 100%;
+
+    &__wrapper, &__prices, &__bottom {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: flex-start;
+    }
+    &__value {
+      margin-right: 0;
+    }
+    &__bottom, &__wrapper {
+      width: 100%;
+    }
+  }
 }
