@@ -11,9 +11,11 @@ use App\OrderItem;
 use App\OrderState;
 use App\Product;
 use App\ProductVariation;
+use PortedCheese\CategoryProduct\Events\ProductListChange;
 use PortedCheese\ProductVariation\Console\Commands\ProductVariationMakeCommand;
 use PortedCheese\ProductVariation\Events\CreateNewOrder;
 use PortedCheese\ProductVariation\Listeners\SendNewOrderNotify;
+use PortedCheese\ProductVariation\Listeners\UpdatePricesList;
 use PortedCheese\ProductVariation\Observers\ProductObserver;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -185,5 +187,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         // Создание заказа.
         $this->app["events"]->listen(CreateNewOrder::class, SendNewOrderNotify::class);
+        // Изменение списка товаров.
+        $this->app["events"]->listen(ProductListChange::class, UpdatePricesList::class);
     }
 }
