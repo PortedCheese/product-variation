@@ -43,9 +43,10 @@
   }
 
   &__rub {
-    width: 9px;
-    height: 10px;
+    width: .75em;
+    height: 1em;
     margin-left: .25rem;
+    font-size: .75rem;
     fill: currentColor;
   }
 }

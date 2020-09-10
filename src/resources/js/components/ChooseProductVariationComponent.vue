@@ -45,7 +45,7 @@
                         <span class="choose-variation__value">
                             {{ variation.human_price }}
                             <svg class="choose-variation__rub">
-                                <use xlink:href="#catalog-rub-bold"></use>
+                                <use xlink:href="#catalog-rub"></use>
                             </svg>
                         </span>
 
