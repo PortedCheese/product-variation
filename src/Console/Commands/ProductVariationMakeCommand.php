@@ -120,6 +120,7 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
     protected $scssIncludes = [
         "app" => [
             "product-variation/variation-price",
+            "product-variation/choose-variation",
         ],
         "admin" => [],
     ];

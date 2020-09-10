@@ -5,7 +5,7 @@
         <div class="btn-group"
              role="group">
             <button type="button"
-                    class="btn btn-primary mt-3"
+                    class="btn btn-primary"
                     data-toggle="modal"
                     :disabled="chosenVariation === '' || loading"
                     data-target="#orderProduct">
