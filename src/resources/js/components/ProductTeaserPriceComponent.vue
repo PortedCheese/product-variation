@@ -4,21 +4,21 @@
 
         <div v-if="variationData" class="variation-price__wrapper">
             <div class="variation-price__prices">
-                <div class="variation-price__value">
-                    <span class="variation-price__value-text">
+                <div class="rub-format variation-price__value">
+                    <span class="rub-format__value">
                         {{ variationData.human_price }}
-                        <svg class="variation-price__rub">
-                            <use xlink:href="#catalog-rub-bold"></use>
-                        </svg>
                     </span>
+                    <svg class="rub-format__ico variation-price__rub">
+                        <use xlink:href="#catalog-rub-bold"></use>
+                    </svg>
                 </div>
-                <div class="variation-price__value variation-price__value_thin" v-if="variationData.sale">
-                    <span class="variation-price__value-text">
+                <div class="rub-format variation-price__value variation-price__value_thin" v-if="variationData.sale">
+                    <span class="rub-format__value">
                         {{ variationData.human_sale_price }}
-                        <svg class="variation-price__rub  variation-price__rub_thin">
-                            <use xlink:href="#catalog-rub"></use>
-                        </svg>
                     </span>
+                    <svg class="rub-format__ico variation-price__rub variation-price__rub_thin">
+                        <use xlink:href="#catalog-rub"></use>
+                    </svg>
                 </div>
             </div>
             <div v-if="variationData.description" class="variation-price__description">

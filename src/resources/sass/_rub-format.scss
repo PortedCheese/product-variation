@@ -1,0 +1,14 @@
+.rub-format {
+  display: inline-block;
+  &__value,
+  &__ico {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  &__ico {
+    width: .75em;
+    height: 1em;
+    fill: currentColor;
+    margin-top: .125em;
+  }
+}

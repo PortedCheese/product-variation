@@ -20,9 +20,6 @@
   }
 
   &__value {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
     position: relative;
     &_thin {
       color: $gray-500;
@@ -40,13 +37,5 @@
         top: 55%;
       }
     }
-  }
-
-  &__rub {
-    width: .75em;
-    height: 1em;
-    margin-left: .25rem;
-    font-size: .75rem;
-    fill: currentColor;
   }
 }

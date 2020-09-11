@@ -7,19 +7,13 @@
   }
 
   &__value {
-    &-text {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-    }
-
     display: inline-block;
     font-size: 1.125rem;
     font-weight: $font-weight-bolder;
     margin-right: $grid-gutter-width / 2;
     &_thin {
       font-size: .875rem;
-      font-weight: $font-weight-light;
+      font-weight: $font-weight-normal;
       color: $gray-500;
       position: relative;
       margin-right: 0;
@@ -37,10 +31,6 @@
   }
 
   &__rub {
-    fill: currentColor;
-    width: .75em;
-    height: 1em;
-    margin-left: .25rem;
     font-size: 1rem;
     &_thin {
       font-size: .75rem;
@@ -83,22 +73,7 @@
         margin-right: 0;
         font-size: 1rem;
         @include media-breakpoint-up(sm) {
-          font-size: 1.375rem;
-        }
-      }
-    }
-
-    &__rub {
-      margin-top: .25rem;
-      font-size: 1.5rem;
-      @include media-breakpoint-up(sm) {
-        font-size: 2rem;
-      }
-      &_thin {
-        margin-top: .125rem;
-        font-size: .75rem;
-        @include media-breakpoint-up(sm) {
-          font-size: 1.125rem;
+          font-size: 1.25rem;
         }
       }
     }

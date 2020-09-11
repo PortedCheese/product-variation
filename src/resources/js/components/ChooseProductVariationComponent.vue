@@ -2,21 +2,21 @@
     <div class="form-group variation-price" v-if="showChoose">
         <div v-if="variationData" class="variation-price__wrapper">
             <div class="variation-price__prices">
-                <div class="variation-price__value">
-                    <span class="variation-price__value-text">
+                <div class="rub-format variation-price__value">
+                    <span class="rub-format__value">
                         {{ variationData.human_price }}
-                        <svg class="variation-price__rub">
-                            <use xlink:href="#catalog-rub-bold"></use>
-                        </svg>
                     </span>
+                    <svg class="rub-format__ico">
+                        <use xlink:href="#catalog-rub-bold"></use>
+                    </svg>
                 </div>
-                <div class="variation-price__value variation-price__value_thin" v-if="variationData.sale">
-                    <span class="variation-price__value-text">
+                <div class="rub-format variation-price__value variation-price__value_thin" v-if="variationData.sale">
+                    <span class="rub-format__value">
                         {{ variationData.human_sale_price }}
-                        <svg class="variation-price__rub  variation-price__rub_thin">
-                            <use xlink:href="#catalog-rub"></use>
-                        </svg>
                     </span>
+                    <svg class="rub-format__ico">
+                        <use xlink:href="#catalog-rub"></use>
+                    </svg>
                 </div>
                 <div v-if="variations.length === 1 && variationData.description">
                     {{ variationData.description }}
@@ -42,16 +42,20 @@
                     </span>
                     <span v-if="variation.disabled_at" class="choose-variation__prices">Нет в наличии</span>
                     <span v-else class="choose-variation__prices">
-                        <span class="choose-variation__value">
-                            {{ variation.human_price }}
-                            <svg class="choose-variation__rub">
+                        <span class="rub-format choose-variation__value">
+                            <span class="rub-format__value">
+                                {{ variation.human_price }}
+                            </span>
+                            <svg class="rub-format__ico">
                                 <use xlink:href="#catalog-rub"></use>
                             </svg>
                         </span>
 
-                        <span class="choose-variation__value choose-variation__value_thin" v-if="variation.sale">
-                            {{ variation.human_sale_price }}
-                            <svg class="choose-variation__rub choose-variation__rub_thin">
+                        <span class="rub-format choose-variation__value choose-variation__value_thin" v-if="variation.sale">
+                            <span class="rub-format__value">
+                                {{ variation.human_sale_price }}
+                            </span>
+                            <svg class="rub-format__ico">
                                 <use xlink:href="#catalog-rub"></use>
                             </svg>
                         </span>
