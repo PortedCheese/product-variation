@@ -95,6 +95,33 @@ class Order extends Model
     }
 
     /**
+     * День создания.
+     *
+     * @return \Carbon\Carbon|null
+     */
+    public function getCreatedHumanDateAttribute()
+    {
+        $created = $this->created_at;
+        $changed = datehelper()->changeTz($created);
+        return datehelper()->format($changed, "d.m.Y");
+    }
+
+    /**
+     * Формат итого.
+     *
+     * @return string
+     */
+    public function getHumanTotalAttribute()
+    {
+        if ($this->total - intval($this->total) > 0) {
+            return number_format($this->total, 2, ",", " ");
+        }
+        else {
+            return number_format($this->total, 0, ",", " ");
+        }
+    }
+
+    /**
      * Имя пользователя.
      *
      * @return string
