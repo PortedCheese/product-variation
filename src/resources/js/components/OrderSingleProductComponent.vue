@@ -190,6 +190,7 @@
                 if (this.user) {
                     this.formData.name = this.user.name;
                     this.formData.email = this.user.email;
+                    this.formData.phone = this.user.phone;
                 }
             },
             sendOrder() {

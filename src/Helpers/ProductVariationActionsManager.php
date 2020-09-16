@@ -74,6 +74,8 @@ class ProductVariationActionsManager
                 "id" => $user->id,
                 "email" => $user->email,
                 "name" => $user->full_name,
+                "phone" => $user->phone_number,
+                "model" => $user,
             ];
         }
         else {
