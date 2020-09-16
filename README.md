@@ -23,17 +23,17 @@
     
     NEW_ORDER_NOTIFY_EMAIL - Адрес куда уходят уведомления о новом заказе для клиента
 
-Если надо выгрузить конфиг:
+Выгрузить конфигурацию:
 
     php artisan vendor:publish --provider="PortedCheese\ProductVariation\ServiceProvider" --tag=config
     
-Переменные конфига:
+Переменные конфигурации:
 
-    productVariationAdminRoutes - Использовать роуты для управления вариациями из пакета
-    orderStatesAdminRoutes - Использовать роуты для управления сатусами заказа из пакета
-    orderAdminRoutes - Использовать роуты для управления заказами из пакета
-    
-    ordersSiteRoutes - Использовать роуты для заказа из пакета
+    enableVariations(true) - Включить вариации
+    productVariationAdminRoutes(true) - Использовать роуты для управления вариациями из пакета
+    ordersSiteRoutes(true) - Использовать роуты для сайта из пакета
+    orderStatesAdminRoutes(true) - Использовать роуты для управления сатусами заказа из пакета
+    orderAdminRoutes(true) - Использовать роуты для управления заказами из пакета
     
     variationFacade - Класс фасада для действий с вариациями
     orderFacade - Класс фасада для действий с заказами
@@ -41,6 +41,11 @@
     orderNumberHasLetter - Номер заказа с буквой в начале
     orderDigitsLength - длина цифровой части номера заказа
     
-    clientNotifyEmail - Адрес куда уходят уведомления о новом заказе для клиента
-    enableClientNotification - Включить уведомления о заказе для клиента
-    enableUserNotification - Включить уведомления о заказе для пользователя
+    clientNotifyEmail(NEW_ORDER_NOTIFY_EMAIL, false) - Адрес куда уходят уведомления о новом заказе для клиента
+    enableClientNotification(true) - Включить уведомления о заказе для клиента
+    enableUserNotification(true) - Включить уведомления о заказе для пользователя
+    
+    enablePriceFilter(true) - Включить фильтрацию по ценам
+    priceFilterKey(product_price) - Ключ для фильтра по цене
+    enablePriceSort(true) - Включить сортировку по цене
+    priceSortReplaceNull(1000000000) - Значение цены когда цены нет, для помещения пустых товаров в конец списка
