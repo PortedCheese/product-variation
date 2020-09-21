@@ -5,6 +5,7 @@ namespace PortedCheese\ProductVariation\Observers;
 use App\Product;
 use App\ProductVariation;
 use PortedCheese\BaseSettings\Exceptions\PreventDeleteException;
+use PortedCheese\ProductVariation\Facades\ProductVariationActions;
 
 class ProductObserver
 {
@@ -25,6 +26,8 @@ class ProductObserver
      */
     public function deleted(Product $product)
     {
+        ProductVariationActions::clearProductVariationsCache($product);
+
         foreach ($product->variations as $variation) {
             /**
              * @var ProductVariation $variation

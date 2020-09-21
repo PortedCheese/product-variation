@@ -64,6 +64,8 @@ class ProductVariationObserver
     protected function clearProductVariationsCache(ProductVariation $variation)
     {
         $product = $variation->product;
-        ProductVariationActions::clearProductVariationsCache($product);
+        if (! empty($product)) {
+            ProductVariationActions::clearProductVariationsCache($product);
+        }
     }
 }
