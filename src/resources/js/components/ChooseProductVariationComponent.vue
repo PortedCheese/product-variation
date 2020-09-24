@@ -36,29 +36,34 @@
                        @change="$emit('change', chosenVariation)"
                        class="custom-control-input">
                 <label class="custom-control-label choose-variation__label"
+                       v-if="variation.disabled_at"
                        :for="'customRadio' + variation.id">
                     <span>
                         {{ variation.description }}
                     </span>
-                    <span v-if="variation.disabled_at" class="choose-variation__prices">Нет в наличии</span>
-                    <span v-else class="choose-variation__prices">
-                        <span class="rub-format choose-variation__value">
-                            <span class="rub-format__value">
-                                {{ variation.human_price }}
-                            </span>
-                            <svg class="rub-format__ico">
-                                <use xlink:href="#catalog-rub"></use>
-                            </svg>
+                    <span class="choose-variation__prices">Нет в наличии</span>
+                </label>
+                <label class="custom-control-label choose-variation__label"
+                       v-else
+                       :for="'customRadio' + variation.id">
+                    <span>
+                        {{ variation.description }}
+                    </span>
+                    <span class="rub-format choose-variation__value">
+                        <span class="rub-format__value">
+                            {{ variation.human_price }}
                         </span>
-
-                        <span class="rub-format choose-variation__value choose-variation__value_thin" v-if="variation.sale">
-                            <span class="rub-format__value">
-                                {{ variation.human_sale_price }}
-                            </span>
-                            <svg class="rub-format__ico">
-                                <use xlink:href="#catalog-rub"></use>
-                            </svg>
+                        <svg class="rub-format__ico">
+                            <use xlink:href="#catalog-rub"></use>
+                        </svg>
+                    </span>
+                    <span class="rub-format choose-variation__value choose-variation__value_thin" v-if="variation.sale">
+                        <span class="rub-format__value">
+                            {{ variation.human_sale_price }}
                         </span>
+                        <svg class="rub-format__ico">
+                            <use xlink:href="#catalog-rub"></use>
+                        </svg>
                     </span>
                 </label>
             </div>

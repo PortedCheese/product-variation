@@ -49,3 +49,12 @@
     priceFilterKey(product_price) - Ключ для фильтра по цене
     enablePriceSort(true) - Включить сортировку по цене
     priceSortReplaceNull(1000000000) - Значение цены когда цены нет, для помещения пустых товаров в конец списка
+    
+    
+### Versions
+
+    v1.0.2:
+        - Попарвлен вывод скидки при выборе вариации
+    Обновление:
+        - php artisan vendor:publish --provider="PortedCheese\ProductVariation\ServiceProvider" --tag=public --force
+        - npm run prod
