@@ -28,10 +28,34 @@ class OrderObserver
             $order->user_id = Auth::id();
         }
 
+        $this->addState($order);
+        $this->clearUserData($order);
+    }
+
+    /**
+     * Статус заказа.
+     *
+     * @param Order $order
+     */
+    protected function addState(Order $order)
+    {
         if (empty($order->state_id)) {
             $state = OrderActions::getNewState();
             $order->state_id = $state->id;
         }
+    }
+
+    /**
+     * Очистить данные пользователя.
+     *
+     * @param Order $order
+     */
+    protected function clearUserData(Order $order)
+    {
+        $userData = $order->user_data;
+        if (! empty($userData["_token"])) unset($userData["_token"]);
+        if (! empty($userData["privacy_policy"])) unset($userData["privacy_policy"]);
+        $order->user_data = $userData;
     }
 
     /**
