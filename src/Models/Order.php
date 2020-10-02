@@ -19,6 +19,11 @@ class Order extends Model
         "user_data" => "array",
     ];
 
+    /**
+     * Аттрибуты заказа для отображения.
+     *
+     * @return array
+     */
     public static function getAttributesForRender()
     {
         return [
@@ -27,7 +32,6 @@ class Order extends Model
             "phone" => "Телефон",
             "comment" => "Комментарий",
             "user_id" => "Идентификатор пользователя",
-            "privacy_policy" => "Согласие с политикой конфиденциальности",
         ];
     }
 

@@ -24,10 +24,12 @@
                         </thead>
                         <tbody>
                         @foreach ($order->user_data as $key => $value)
-                            <tr>
-                                <td>{{ ! empty($attr[$key]) ? $attr[$key] : $key }}</td>
-                                <td>{{ $value }}</td>
-                            </tr>
+                            @if (! empty($attr[$key]))
+                                <tr>
+                                    <td>{{ $attr[$key] }}</td>
+                                    <td>{{ $value }}</td>
+                                </tr>
+                            @endif
                         @endforeach
                         </tbody>
                     </table>
