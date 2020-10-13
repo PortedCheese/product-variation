@@ -8,7 +8,6 @@ use App\ProductVariation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use PortedCheese\ProductVariation\Facades\ProductVariationActions;
-use PortedCheese\ProductVariation\Http\Resources\ProductVariation as VariationResource;
 
 class ProductVariationController extends Controller
 {

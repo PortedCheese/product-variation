@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use PortedCheese\CategoryProduct\Facades\ProductActions;
-use PortedCheese\ProductVariation\Http\Resources\ProductVariation as VariationResource;
 
 class ProductVariationActionsManager
 {
@@ -31,7 +30,8 @@ class ProductVariationActionsManager
         if ($getCollection) {
             return $collection;
         }
-        return VariationResource::collection($collection);
+        $class = config("product-variation.productVariationResource");
+        return $class::collection($collection);
     }
 
     /**

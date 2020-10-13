@@ -11,6 +11,9 @@ return [
     "variationFacade" => \PortedCheese\ProductVariation\Helpers\ProductVariationActionsManager::class,
     "orderFacade" => \PortedCheese\ProductVariation\Helpers\OrderActionsManager::class,
 
+    // Resources.
+    "productVariationResource" => \PortedCheese\ProductVariation\Http\Resources\ProductVariation::class,
+
     // Order settings
     "orderNumberHasLetter" => true,
     "orderDigitsLength" => 8,

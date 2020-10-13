@@ -38,6 +38,8 @@
     variationFacade - Класс фасада для действий с вариациями
     orderFacade - Класс фасада для действий с заказами
     
+    productVariationResource - Класс для фасада вариаций
+    
     orderNumberHasLetter - Номер заказа с буквой в начале
     orderDigitsLength - длина цифровой части номера заказа
     
