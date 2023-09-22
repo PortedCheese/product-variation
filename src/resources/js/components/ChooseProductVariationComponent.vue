@@ -24,8 +24,8 @@
             </div>
         </div>
 
-        <div class="choose-variation" :class="variations.length <= 1 && variationData ? 'd-none' : ''">
-            <div :class="'custom-control custom-radio choose-variation__item'+ variation.disabled_at ? ' d-none':''"
+        <div class="choose-variation" v-if="variations.length > 1 && variationData">
+            <div class="сustom-control custom-radio choose-variation__item"
                  v-for="variation in variations">
                 <input type="radio"
                        :id="'customRadio' + variation.id"
@@ -36,12 +36,12 @@
                        @change="$emit('change', chosenVariation)"
                        class="custom-control-input">
                 <label class="custom-control-label choose-variation__label"
-                       v-if="variation.disabled_at"
-                       :for="'customRadio' + variation.id">
-                    <span>
-                        {{ variation.description }}
-                    </span>
-                    <span class="choose-variation__prices">Нет в наличии</span>
+                      v-if="variation.disabled_at"
+                      :for="'customRadio' + variation.id">
+                   <span>
+                       {{ variation.description }}
+                   </span>
+                  <span class="choose-variation__prices">Нет в наличии</span>
                 </label>
                 <label class="custom-control-label choose-variation__label"
                        v-else

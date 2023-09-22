@@ -54,6 +54,12 @@
     
     
 ### Versions
+    v1.1.3:
+       - изменен компонет выбора вариации ChooseProductVariationComponent 
+        (не показывать неопубликованную вариацию в компоненте, если вариация одна или если все вариации не опубликованы)
+       Обновление:
+       - php artisan vendor:publish --provider="PortedCheese\ProductVariation\ServiceProvider" --tag=public --force
+       - npm run prod
     v1.1.2: 
         - изменен компонет выбора вариации ChooseProductVariationComponent (вывод неопубликованной вариации без radio)
         Обновление:
