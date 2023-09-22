@@ -54,7 +54,14 @@
     
     
 ### Versions
-
+    v1.1.2: 
+        - изменен компонет выбора вариации ChooseProductVariationComponent (вывод неопубликованной вариации без radio)
+        Обновление:
+        - php artisan vendor:publish --provider="PortedCheese\ProductVariation\ServiceProvider" --tag=public --force
+        - npm run prod
+    v1.1.1: vendorName
+    v1.0.4:
+        - добавлен класс для фасада вариаций productVariatonResource
     v1.0.2:
         - Попарвлен вывод скидки при выборе вариации
     Обновление:

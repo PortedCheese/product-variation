@@ -25,7 +25,7 @@
         </div>
 
         <div class="choose-variation" :class="variations.length <= 1 && variationData ? 'd-none' : ''">
-            <div class="custom-control custom-radio choose-variation__item"
+            <div :class="'custom-control custom-radio choose-variation__item'+ variation.disabled_at ? ' d-none':''"
                  v-for="variation in variations">
                 <input type="radio"
                        :id="'customRadio' + variation.id"
