@@ -54,6 +54,12 @@
     
     
 ### Versions
+    v1.1.4:
+        - изменен компонет выбора вариации ChooseProductVariationComponent
+        (если нет ни одной опубликованной вариации, выводить сообщение "нет в наличии")
+        Обновление:
+        - php artisan vendor:publish --provider="PortedCheese\ProductVariation\ServiceProvider" --tag=public --force
+        - npm run prod
     v1.1.3:
        - изменен компонет выбора вариации ChooseProductVariationComponent 
         (не показывать неопубликованную вариацию в компоненте, если вариация одна или если все вариации не опубликованы)
