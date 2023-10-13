@@ -25,7 +25,7 @@
         </div>
 
         <div class="choose-variation" v-if="!variationData">
-            <span class="choose-variation__prices">Нет в наличии</span>
+            <span class="choose-variation__unavailabe">Нет в наличии</span>
         </div>
         <div class="choose-variation" v-if="variations.length > 1 && variationData">
             <div class="сustom-control custom-radio choose-variation__item"
