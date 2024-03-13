@@ -68,10 +68,10 @@ class ProductVariation extends Model
     public function getHumanSalePriceAttribute()
     {
         if ($this->sale_price - intval($this->sale_price) > 0) {
-            return number_format($this->sale_price, 2, ",", " ");
+            return number_format($this->sale_price ?? 0, 2, ",", " ");
         }
         else {
-            return number_format($this->sale_price, 0, ",", " ");
+            return number_format($this->sale_price ?? 0, 0, ",", " ");
         }
     }
 

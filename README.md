@@ -54,6 +54,8 @@
     
     
 ### Versions
+    v1.1.6: fix php8.1  deprecation warning
+        - проверить переопределение Models/ProductVariation > getHumanSalePriceAttribute()
     v1.1.4-v1.1.5:
         - изменен компонет выбора вариации ChooseProductVariationComponent
         (если нет ни одной опубликованной вариации, выводить сообщение "нет в наличии")
