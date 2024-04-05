@@ -29,6 +29,19 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="measurement">Измерение</label>
+                            <select class="custom-select"
+                                  v-model="variation.measurement"
+                                  id="measurement"
+                                  name="measurement">
+                                <option value="" selected>Не указано</option>
+                                <option v-for="(item) in measurements" :value="item.id">
+                                  {{ item.title  }} ({{ item.short }})
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
                             <label for="edit-description">Описание <span class="text-danger">*</span></label>
                             <input type="text"
                                    id="edit-description"
@@ -91,6 +104,13 @@
     export default {
         name: "EditProductVariationComponent",
 
+        props: {
+            measurements: {
+              required: true,
+              type: Array
+            }
+        },
+
         data() {
             return {
                 variation: {},
@@ -119,7 +139,8 @@
                         description: this.variation.description,
                         price: this.variation.price,
                         sale_price: this.variation.sale_price,
-                        sale: this.variation.sale ? 1 : 0
+                        sale: this.variation.sale ? 1 : 0,
+                        measurement: this.variation.measurement
                     })
                     .then(response => {
                         let data = response.data;

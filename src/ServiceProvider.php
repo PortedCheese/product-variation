@@ -152,6 +152,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         if (config("product-variation.orderAdminRoutes")) {
             $this->loadRoutesFrom(__DIR__ . "/routes/admin/order.php");
         }
+        // Управление измерениями
+        if (config("product-variation.measurementAdminRoutes")) {
+            $this->loadRoutesFrom(__DIR__ . "/routes/admin/measurement.php");
+        }
     }
 
     /**

@@ -6,7 +6,7 @@
             <div class="variation-price__prices">
                 <div class="rub-format variation-price__value">
                     <span class="rub-format__value">
-                        {{ variationData.human_price }}
+                        <span class="rub-format__measurement">{{ variationData.short_measurement }}</span> {{ variationData.human_price }}
                     </span>
                     <svg class="rub-format__ico variation-price__rub">
                         <use xlink:href="#catalog-rub-bold"></use>

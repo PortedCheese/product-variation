@@ -44,7 +44,7 @@
                                 </td>
                                 <td>{{ $item->sku }}</td>
                                 <td>{{ $item->price }}</td>
-                                <td>{{ $item->quantity }}</td>
+                                <td>{{ $item->quantity }} {{ $item->measurement }}</td>
                                 <td>{{ $item->total }}</td>
                                 <td>{{ $item->description }}</td>
                             </tr>

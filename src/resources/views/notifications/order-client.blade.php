@@ -7,7 +7,7 @@
 | Товар | Количество | Сумма |
 | :--- | --------: | ---: |
 @foreach ($items as $item)
-| {{ $item->title }} ({{ $item->description }}) | {{ $item->quantity }} | {{ $item->total }} |
+| {{ $item->title }} ({{ $item->description }}) | {{ $item->quantity }}  {{ $item->measurement }} | {{ $item->total }} |
 @endforeach
 @endcomponent
 

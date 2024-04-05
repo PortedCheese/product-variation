@@ -4,6 +4,7 @@ namespace PortedCheese\ProductVariation\Models;
 
 use App\Cart;
 use App\Product;
+use App\Measurement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -26,6 +27,35 @@ class ProductVariation extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    /**
+     * Единица измерения
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     *
+     */
+    public function measurement(){
+        return $this->belongsTo(Measurement::class);
+    }
+
+    /**
+     * Короткое измерение.
+     *
+     * @return string
+     */
+    public function getShortMeasurementAttribute()
+    {
+        return ! empty($measure = $this->measurement) ? $measure->short: "шт";
+    }
+    /**
+     * Полное измерение.
+     *
+     * @return string
+     */
+    public function getFullMeasurementAttribute()
+    {
+        return ! empty($measure = $this->measurement) ? $measure->title : "-";
     }
 
     /**

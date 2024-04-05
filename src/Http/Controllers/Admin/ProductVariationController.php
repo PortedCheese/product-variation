@@ -3,6 +3,7 @@
 namespace PortedCheese\ProductVariation\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Measurement;
 use App\Product;
 use App\ProductVariation;
 use Illuminate\Http\Request;
@@ -43,7 +44,17 @@ class ProductVariationController extends Controller
     public function store(Request $request, Product $product)
     {
         $this->storeValidator($request->all(), $product);
-        $product->variations()->create($request->all());
+        $variation = $product->variations()->create($request->all());
+        try
+        {
+            $measure = Measurement::find($request->get("measurement"));
+            $variation->measurement_id = $measure->id;
+            $variation->save();
+        }
+        catch (\Exception $e){
+
+        }
+
         return response()
             ->json([
                 "success" => true,
@@ -59,11 +70,13 @@ class ProductVariationController extends Controller
     {
         Validator::make($data, [
             "sku" => ["nullable", "max:150", "unique:product_variations,sku"],
+            "measurement" => ["nullable", "max:150", "exists:measurements,id"],
             "price" => ["required", "numeric", "min:0"],
             "sale_price" => ["nullable", "numeric", "min:0"],
             "description" => ["required", "max:100"],
         ], [], [
             "sku" => "Артикул",
+            "measurements" => "Измерение",
             "price" => "Цена",
             "sale_price" => "Старая цена",
             "description" => "Описание",
@@ -81,6 +94,15 @@ class ProductVariationController extends Controller
     {
         $this->updateValidator($request->all(), $variation);
         $variation->update($request->all());
+        try
+        {
+            $measure = Measurement::find($request->get("measurement"));
+            $variation->measurement_id = $measure->id;
+        }
+        catch (\Exception $e){
+            $variation->measurement_id = null;
+        }
+        $variation->save();
         return response()
             ->json([
                 "success" => true,
@@ -97,11 +119,13 @@ class ProductVariationController extends Controller
         $id = $variation->id;
         Validator::make($data, [
             "sku" => ["nullable", "max:150", "unique:product_variations,sku,{$id}"],
+            "measurement" => ["nullable", "max:150", "exists:measurements,id"],
             "price" => ["required", "numeric", "min:0"],
             "sale_price" => ["nullable", "numeric", "min:0"],
             "description" => ["required", "max:100"],
         ], [], [
             "sku" => "Артикул",
+            "measurement" => "Измерение",
             "price" => "Цена",
             "sale_price" => "Старая цена",
             "description" => "Описание",

@@ -15,7 +15,17 @@ class OrderItem extends Model
         "title",
         "product_id",
         "variation_id",
+        "measurement"
     ];
+
+    /**
+     * Измерение
+     * @return mixed|string
+     */
+    public function getMeasurementAttribute()
+    {
+        return ! empty($this->measurement) ? $this->measurement  : "шт";
+    }
 
     /**
      * Заказ.

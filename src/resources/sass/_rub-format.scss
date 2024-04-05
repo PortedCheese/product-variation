@@ -11,4 +11,9 @@
     fill: currentColor;
     margin-top: .125em;
   }
+  &__measurement{
+    font-weight: normal;
+    font-size: .875rem;
+    color: $gray-500;
+  }
 }

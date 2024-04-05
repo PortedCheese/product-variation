@@ -42,6 +42,17 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="measurement">Измерение</label>
+                                <select class="custom-select"
+                                    v-model="measurement"
+                                    id="measurement"
+                                    name="measurement">
+                                    <option value="" selected>Выбрать</option>
+                                    <option v-for="(item, index) in measurements" :value="item.id">{{ item.title  }} ({{ item.short}})</option>
+                              </select>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="description">Описание <span class="text-danger">*</span></label>
                                 <input type="text"
                                        id="description"
@@ -110,6 +121,10 @@
             postUrl: {
                 required: true,
                 type: String
+            },
+            measurements: {
+              required: true,
+              type: Array
             }
         },
 
@@ -122,6 +137,7 @@
                 price: 0,
                 sale_price: 0,
                 sale: false,
+                measurement: ""
             }
         },
 
@@ -146,6 +162,7 @@
                         price: this.price,
                         sale_price: this.sale_price,
                         sale: this.sale ? 1 : 0,
+                        measurement: this.measurement,
                     })
                     .then(response => {
                         let data = response.data;

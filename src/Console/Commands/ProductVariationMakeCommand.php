@@ -41,7 +41,7 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
      * @var array
      */
     protected $models = [
-        "ProductVariation", "OrderState", "Order", "OrderItem",
+        "ProductVariation", "OrderState", "Order", "OrderItem", "Measurement",
     ];
 
     /**
@@ -51,7 +51,7 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
      */
     protected $controllers = [
         "Admin" => [
-            "ProductVariationController", "OrderStateController", "OrderController",
+            "ProductVariationController", "OrderStateController", "OrderController", "MeasurementController"
         ],
         "Site" => [
             "OrderController",
@@ -110,7 +110,12 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
             "title" => "Заказы",
             "slug" => "orders",
             "policy" => "OrderPolicy",
-        ]
+        ],
+        [
+            "title" => "Измерения",
+            "slug" => "measurements",
+            "policy" => "MeasurementPolicy",
+        ],
     ];
 
     /**

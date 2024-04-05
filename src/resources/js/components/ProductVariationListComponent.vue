@@ -1,7 +1,7 @@
 <template>
     <div class="col-12 mb-2">
         <div class="card">
-            <add-new :post-url="postUrl" v-on:add-new-variation="getList" v-if="canCreate"></add-new>
+            <add-new :post-url="postUrl" :measurements="measurements" v-on:add-new-variation="getList" v-if="canCreate"></add-new>
             <div class="card-header" v-else>
                 <h5 class="card-title">Вариации</h5>
             </div>
@@ -11,6 +11,7 @@
                         <thead>
                         <tr>
                             <th>Артикул</th>
+                            <th>Измерение</th>
                             <th>Цена</th>
                             <th>Старая цена</th>
                             <th>Скидка</th>
@@ -21,6 +22,7 @@
                         <tbody>
                         <tr v-for="item in variations">
                             <td>{{ item.sku }}</td>
+                            <td>{{ item.full_measurement }}</td>
                             <td>{{ item.price }}</td>
                             <td>{{ item.sale_price }}</td>
                             <td>{{ item.sale ? "Да" : "Нет" }}</td>
@@ -59,7 +61,7 @@
                 </div>
             </div>
         </div>
-        <edit-form v-on:update-variation="getList"></edit-form>
+        <edit-form v-on:update-variation="getList" :measurements="measurements"></edit-form>
     </div>
 </template>
 
@@ -86,6 +88,10 @@
             canCreate: {
                 required: true,
                 type: Number
+            },
+            measurements: {
+              required: true,
+              type: Array
             }
         },
 

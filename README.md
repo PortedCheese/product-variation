@@ -34,10 +34,10 @@
     ordersSiteRoutes(true) - Использовать роуты для сайта из пакета
     orderStatesAdminRoutes(true) - Использовать роуты для управления сатусами заказа из пакета
     orderAdminRoutes(true) - Использовать роуты для управления заказами из пакета
-    
+    measurementAdminRoutes(true) - Использовать роуты для управления измерениями из пакета
     variationFacade - Класс фасада для действий с вариациями
+
     orderFacade - Класс фасада для действий с заказами
-    
     productVariationResource - Класс для фасада вариаций
     
     orderNumberHasLetter - Номер заказа с буквой в начале
@@ -54,6 +54,22 @@
     
     
 ### Versions
+    v1.2.0: measurement (category-product ^1.4)
+        - новый параметр конфига: measurementAdminRoutes(true)
+        Проверить переопределение:
+        - Resourses: ProductVariation.php
+        - Models: ProductVariation, OrderItem 
+        - Controllers: Admin/ProductVatiationController > store, update
+        - Observers: OrderItemObserver (addMeasurementToItem)
+        - Components: addProductVariation, EditProductVariation, ProductVariationList, ChooseProductVAriation, ProductTeaserPrice
+        - scss: add rub-format__measurement
+        - Blades: admin.orders.show, admin.product-variations.includes.list,notifications.order-client, notifications.order-user
+        Обновление:
+        - php artisan migrate 
+            (create measurements table & add measurement_id [null|int] to product_variations table & add measurement [string] to order_items)
+        - php artisan make:product-variation --models --policies --controllers (y - to Measurement)
+        - php artisan vendor:publish --provider="PortedCheese\ProductVariation\ServiceProvider" --tag=public --force
+        - npm run 
     v1.1.6: fix php8.1  deprecation warning
         - проверить переопределение Models/ProductVariation > getHumanSalePriceAttribute()
     v1.1.4-v1.1.5:
