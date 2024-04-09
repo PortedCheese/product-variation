@@ -55,7 +55,7 @@
                     </span>
                     <span class="rub-format choose-variation__value">
                         <span class="rub-format__value">
-                            <span class="rub-format__measurement">{{ variation.short_measurement }}</span> {{ variation.human_price }}
+                            <span v-if="variation.measurement" class="rub-format__measurement">{{ variation.short_measurement }}</span> {{ variation.human_price }}
                         </span>
                         <svg class="rub-format__ico">
                             <use xlink:href="#catalog-rub"></use>
