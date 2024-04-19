@@ -51,10 +51,18 @@
     priceFilterKey(product_price) - Ключ для фильтра по цене
     enablePriceSort(true) - Включить сортировку по цене
     priceSortReplaceNull(1000000000) - Значение цены когда цены нет, для помещения пустых товаров в конец списка
+
+    enableVariationSpecifications(false) - Включить характеристики для вариаций
     
     
 ### Versions
-    v1.2.0: measurement (category-product ^1.4)
+    v1.3.0: variation specifications 
+        - новый параметр конфига: measurementAdminRoutes(true)
+        - php artisan migrate
+        - php artisan make:product-variation --controllers
+        - php artisan vendor:publish --provider="PortedCheese\ProductVariation\ServiceProvider" --tag=public --force
+        
+    v1.2.0-v1.2.2: measurement (category-product ^1.4)
         - новый параметр конфига: measurementAdminRoutes(true)
         Проверить переопределение:
         - Resourses: ProductVariation.php

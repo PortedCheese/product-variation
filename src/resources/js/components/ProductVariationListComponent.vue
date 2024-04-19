@@ -1,7 +1,11 @@
 <template>
     <div class="col-12 mb-2">
         <div class="card">
-            <add-new :post-url="postUrl" :measurements="measurements" v-on:add-new-variation="getList" v-if="canCreate"></add-new>
+            <add-new :post-url="postUrl"
+                     :available="this.available"
+                     :specifications="this.specifications"
+                     :measurements="measurements" v-on:add-new-variation="getList" v-if="canCreate"
+            ></add-new>
             <div class="card-header" v-else>
                 <h5 class="card-title">Вариации</h5>
             </div>
@@ -85,6 +89,10 @@
                 required: true,
                 type: String
             },
+            specUrl:{
+                required: true,
+                type: String
+            },
             canCreate: {
                 required: true,
                 type: Number
@@ -100,14 +108,39 @@
                 loading: false,
                 variations: [],
                 errors: [],
+                available: [],
+                specifications: []
             }
         },
 
         created() {
             this.getList();
+            this.getSpec();
         },
 
         methods: {
+            getSpec() {
+                this.loading = true;
+                axios
+                    .get(this.specUrl)
+                    .then(response => {
+                        let data = response.data;
+                        this.available = data.available;
+                        this.specifications = data.items;
+                    })
+                    .catch(error => {
+                        let data = error.response.data;
+                        Swal.fire({
+                            type: "error",
+                            title: "Усп...",
+                            text: "Что то пошло не так",
+                            footer: data.message
+                        })
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    })
+            },
             getList() {
                 this.loading = true;
                 axios

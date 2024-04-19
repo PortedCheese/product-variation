@@ -32,6 +32,12 @@
                                 </template>
                             </div>
 
+                            <add-new-variation-specification :available="this.available"
+                                                             :specifications="this.specifications"
+                                                             @updateParent="getSpecValues"
+                                                             :resetSpecValues="this.resetSpecValues"
+                            ></add-new-variation-specification>
+
                             <div class="form-group">
                                 <label for="sku">Артикул</label>
                                 <input type="text"
@@ -114,8 +120,13 @@
 </template>
 
 <script>
+    import AddNewVariationSpecification from "./AddProductVariationProductSpecificationComponent"
     export default {
         name: "AddProductVariationComponent",
+
+        components: {
+            "add-new-variation-specification": AddNewVariationSpecification,
+        },
 
         props: {
             postUrl: {
@@ -125,6 +136,13 @@
             measurements: {
               required: true,
               type: Array
+            },
+            available: {
+                required: false,
+                type: Array,
+            },
+            specifications: {
+                required: false,
             }
         },
 
@@ -137,7 +155,10 @@
                 price: 0,
                 sale_price: 0,
                 sale: false,
-                measurement: ""
+                measurement: "",
+                specValues: [],
+                specIds: [],
+                resetSpecValues: false,
             }
         },
 
@@ -152,6 +173,12 @@
         },
 
         methods: {
+            getSpecValues(data){
+                this.specValues = data["specValues"];
+                for (let i in this.specValues ){
+                    this.specIds[i] = this.specValues[i].product_specification_id;
+                }
+            },
             postNewVariation() {
                 this.loading = true;
                 this.errors = [];
@@ -163,6 +190,7 @@
                         sale_price: this.sale_price,
                         sale: this.sale ? 1 : 0,
                         measurement: this.measurement,
+                        specificationIds: this.specIds
                     })
                     .then(response => {
                         let data = response.data;
@@ -181,6 +209,8 @@
                             this.price = 0;
                             this.sale_price = 0;
                             this.sale = false;
+                            this.specificationsIds = [];
+                            this.resetSpecValues = true;
                         }
                     })
                     .catch(error => {

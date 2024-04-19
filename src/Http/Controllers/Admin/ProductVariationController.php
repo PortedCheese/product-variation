@@ -7,7 +7,9 @@ use App\Measurement;
 use App\Product;
 use App\ProductVariation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use PortedCheese\CategoryProduct\Facades\ProductActions;
 use PortedCheese\ProductVariation\Facades\ProductVariationActions;
 
 class ProductVariationController extends Controller
@@ -44,17 +46,27 @@ class ProductVariationController extends Controller
     public function store(Request $request, Product $product)
     {
         $this->storeValidator($request->all(), $product);
+
         $variation = $product->variations()->create($request->all());
         try
         {
             $measure = Measurement::find($request->get("measurement"));
-            $variation->measurement_id = $measure->id;
-            $variation->save();
+            if (isset($variation->measurement_id)){
+                $variation->measurement_id = $measure->id;
+                $variation->save();
+            }
         }
         catch (\Exception $e){
-
+            Log::error($e);
         }
-
+        try
+        {
+            $specifications = $request->get("specificationIds");
+            $variation->specifications()->sync($specifications);
+        }
+        catch (\Exception $e){
+            Log::error($e);
+        }
         return response()
             ->json([
                 "success" => true,
@@ -74,12 +86,14 @@ class ProductVariationController extends Controller
             "price" => ["required", "numeric", "min:0"],
             "sale_price" => ["nullable", "numeric", "min:0"],
             "description" => ["required", "max:100"],
+            "specifications" => ["nullable", "array"],
         ], [], [
             "sku" => "Артикул",
             "measurements" => "Измерение",
             "price" => "Цена",
             "sale_price" => "Старая цена",
             "description" => "Описание",
+            "specifications" => "Характеристики",
         ])->validate();
     }
 

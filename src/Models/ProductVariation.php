@@ -5,6 +5,7 @@ namespace PortedCheese\ProductVariation\Models;
 use App\Cart;
 use App\Product;
 use App\Measurement;
+use App\ProductSpecification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -37,6 +38,15 @@ class ProductVariation extends Model
      */
     public function measurement(){
         return $this->belongsTo(Measurement::class);
+    }
+
+    /**
+     * Характеристики
+     *
+     * @return BelongsToMany
+     */
+    public function specifications(){
+        return $this->belongsToMany(ProductSpecification::class)->withTimestamps();;
     }
 
     /**

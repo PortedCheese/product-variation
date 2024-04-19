@@ -3,6 +3,7 @@
 return [
     "enableVariations" => true,
     "productVariationAdminRoutes" => true,
+    "productVariationSpecificationAdminRoutes" => true,
     "ordersSiteRoutes" => true,
     "orderStatesAdminRoutes" => true,
     "orderAdminRoutes" => true,
@@ -29,4 +30,7 @@ return [
     "priceFilterKey" => "product_price",
     "enablePriceSort" => true,
     "priceSortReplaceNull" => 1000000000,
+
+    // Addition
+    "enableProductVariationsProductSpecifications" => true
 ];

@@ -13,4 +13,6 @@ Route::group([
         ->shallow();
     Route::put("/variations/{variation}/disable", "ProductVariationController@disable")
         ->name("variations.disable");
+    Route::get("/ajax/products/variations/{product}/specifications", "ProductVariationProductSpecificationsController@index")
+        ->name("products.variations.specifications.index");
 });
