@@ -34,8 +34,11 @@
 
                             <add-new-variation-specification :available="this.available"
                                                              :specifications="this.specifications"
-                                                             @updateParent="getSpecValues"
-                                                             :resetSpecValues="this.resetSpecValues"
+                                                             @returnSpecValues="getSpecValues"
+                                                             @returnAddMode="setAddMode"
+                                                             :addMode="true"
+                                                             :reset-spec-values="this.resetSpecValues"
+                                                             v-if="this.canAddSpecifications"
                             ></add-new-variation-specification>
 
                             <div class="form-group">
@@ -143,6 +146,9 @@
             },
             specifications: {
                 required: false,
+            },
+            canAddSpecifications: {
+                required: false
             }
         },
 
@@ -173,6 +179,11 @@
         },
 
         methods: {
+            // Сброс после создания новой вариации
+            setAddMode(data){
+                if (data["addMode"])
+                    this.resetSpecValues = false;
+            },
             getSpecValues(data){
                 this.specValues = data["specValues"];
                 for (let i in this.specValues ){
@@ -209,7 +220,9 @@
                             this.price = 0;
                             this.sale_price = 0;
                             this.sale = false;
-                            this.specificationsIds = [];
+                            this.specIds = [];
+                            this.specValues = [];
+                            this.measurement = "";
                             this.resetSpecValues = true;
                         }
                     })

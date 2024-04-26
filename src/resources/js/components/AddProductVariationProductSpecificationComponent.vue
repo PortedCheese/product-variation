@@ -39,7 +39,7 @@
                     </div>
                 </div>
 
-                <div class="input-group mb-3" @loadeddata="clear" v-for="(item, index) in specValues" :key="index">
+                <div class="input-group mb-3" v-for="(item, index) in getValues" :key="index">
                     <input type="text"
                            readonly
                            name="title"
@@ -83,16 +83,22 @@
         name: "AddProductVariationProductSpecificationComponent",
 
         props: {
-            resetSpecValues:{
-                required: false,
-            },
             available: {
                 required: false,
                 type: Array,
             },
-           specifications: {
+            specifications: {
                required: false,
-           }
+            },
+            variationSpecs: {
+               required: false,
+            },
+            resetSpecValues: {
+                required: false
+            },
+            addMode:{
+                required: false
+            }
         },
 
         data() {
@@ -106,6 +112,35 @@
         },
 
         computed: {
+            // заполнить характеристики из вариации
+            getValues(){
+                // сброс характеристик при создании новой вариации
+                if (this.addMode && this.resetSpecValues){
+                    this.specValues = [];
+                    this.$emit('returnAddMode', {
+                        addMode: true
+                    })
+                }
+                // сброс и заполнение характеристик при создании новой вариации
+                if (this.variationSpecs && this.resetSpecValues){
+                    this.specValues = [];
+                    for (let spec of this.variationSpecs){
+                        this.specValues.push({
+                            specification_id: spec.specification_id,
+                            product_specification_id: spec.id,
+                            title: spec.title,
+                            value: spec.value,
+                            code: spec.code ? spec.code : ""
+                        })
+                    }
+                    this.$emit('returnEditMode', {
+                        editMode: true
+                    })
+                }
+                return this.specValues
+
+            },
+            // выбранная характеристика
             chosenSpec() {
                 let choose = false;
                 for (let item in this.available) {
@@ -118,6 +153,7 @@
                 }
                 return choose;
             },
+            // выбранное значение характеристики
             chosenValue() {
                 let choose = false;
                 for (let item in this.specifications[this.chosenSpecId])
@@ -136,21 +172,22 @@
 
         methods: {
             created(){
-                this.clear();
+                this.$parent.$on("add-new-variation", this.clear());
+                this.$parent.$on("update-variation", this.clear());
             },
             updated(){
-                this.clear();
+                this.$parent.$on("add-new-variation", this.clear());
+                this.$parent.$on("update-variation", this.clear());
             },
+
+            // очистка выбранных характеристик после добавления/изменения
             clear(){
-                if (this.resetSpecValues)
-                {
-                    for (let index in  this.specValues)
-                        this.removeValue(index)
-                    this.chosenSpecId = "";
-                    this.chosenValueId = false;
-                }
+                for (let index in  this.specValues)
+                    this.removeValue(index)
+                this.chosenSpecId = "";
+                this.chosenValueId = false;
             },
-            // Отключить выбранные характеристики
+            // Отключить уже выбранные характеристики
             disableCurrentSpec(optionId, optionTitle){
                 let disable = false;
                 for (let item of this.specValues){
@@ -162,8 +199,10 @@
                 }
                 return disable;
             },
-            // Добавить новое значение в вариацию
+            // Добавить новое значение характеристики в ввариацию
             addNewValue() {
+                this.canAddNewValue = true;
+
                 this.specValues.push({
                     specification_id: this.chosenSpecId,
                     product_specification_id: this.chosenValueId,
@@ -183,7 +222,7 @@
             },
             // Передать характеристики родителю
             sendSpecValues(){
-                this.$emit('updateParent', {
+                this.$emit('returnSpecValues', {
                     specValues: this.specValues
                 })
             }

@@ -48,6 +48,17 @@ class ProductVariationObserver
     }
 
     /**
+     * Перед удалением
+     *
+     * @param ProductVariation $variation
+     * @return void
+     *
+     */
+    public function deleting(ProductVariation $variation){
+        $variation->specifications()->detach();
+    }
+
+    /**
      * После удаления.
      *
      * @param ProductVariation $variation

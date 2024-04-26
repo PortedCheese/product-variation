@@ -46,7 +46,22 @@ class ProductVariation extends Model
      * @return BelongsToMany
      */
     public function specifications(){
-        return $this->belongsToMany(ProductSpecification::class)->withTimestamps();;
+        return $this->belongsToMany(ProductSpecification::class)->orderBy('specification_id')->withTimestamps();
+    }
+
+    public function getSpecificationsArrayAttribute(){
+        $array =  [];
+        foreach ($this->specifications as $item){
+            $array[$item->specification_id]= (Object)[
+                "specification_id" => $item->specification_id,
+                "title" => $item->specification->title,
+                "value" => $item->value,
+                "code" => $item->code,
+                "id" => $item->id
+            ];
+
+        }
+        return  $array;
     }
 
     /**

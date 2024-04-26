@@ -7,6 +7,7 @@ use App\Measurement;
 use App\Product;
 use App\ProductVariation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use PortedCheese\CategoryProduct\Facades\ProductActions;
@@ -86,14 +87,14 @@ class ProductVariationController extends Controller
             "price" => ["required", "numeric", "min:0"],
             "sale_price" => ["nullable", "numeric", "min:0"],
             "description" => ["required", "max:100"],
-            "specifications" => ["nullable", "array"],
+            "specificationIds" => ["nullable", "array"],
         ], [], [
             "sku" => "Артикул",
             "measurements" => "Измерение",
             "price" => "Цена",
             "sale_price" => "Старая цена",
             "description" => "Описание",
-            "specifications" => "Характеристики",
+            "specificationIds" => "Характеристики",
         ])->validate();
     }
 
@@ -116,7 +117,17 @@ class ProductVariationController extends Controller
         catch (\Exception $e){
             $variation->measurement_id = null;
         }
+        try
+        {
+            $specifications = $request->get("specificationIds");
+            $variation->specifications()->sync($specifications);
+            ProductVariationActions::clearProductVariationsCache($variation->product);
+        }
+        catch (\Exception $e){
+            Log::error($e);
+        }
         $variation->save();
+
         return response()
             ->json([
                 "success" => true,
@@ -137,12 +148,14 @@ class ProductVariationController extends Controller
             "price" => ["required", "numeric", "min:0"],
             "sale_price" => ["nullable", "numeric", "min:0"],
             "description" => ["required", "max:100"],
+            "specificationIds" => ["nullable", "array"],
         ], [], [
             "sku" => "Артикул",
             "measurement" => "Измерение",
             "price" => "Цена",
             "sale_price" => "Старая цена",
             "description" => "Описание",
+            "specificationIds" => "Характеристики",
         ])->validate();
     }
 

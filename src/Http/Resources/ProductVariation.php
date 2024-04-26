@@ -24,6 +24,7 @@ class ProductVariation extends JsonResource
         $array["short_measurement"] = $model->short_measurement;
         $array["full_measurement"] = $model->full_measurement;
         $array["measurement"] = $model->measurement ? $model->measurement->id : null;
+        $array["specifications"] = $model->specificationsArray ?: null;
 
         if (strstr($request->route()->getName(), "admin") !== false) {
             $user = Auth::user();

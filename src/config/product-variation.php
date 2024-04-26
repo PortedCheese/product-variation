@@ -32,5 +32,5 @@ return [
     "priceSortReplaceNull" => 1000000000,
 
     // Addition
-    "enableProductVariationsProductSpecifications" => true
+    "enableProductVariationsProductSpecifications" => true // true | false
 ];

@@ -56,11 +56,22 @@
     
     
 ### Versions
+    
     v1.3.0: variation specifications 
-        - новый параметр конфига: measurementAdminRoutes(true)
+        Обновление:
+        - новый параметр конфига:  "productVariationSpecificationAdminRoutes" => true,
+                                   "enableProductVariationsProductSpecifications" => true
         - php artisan migrate
-        - php artisan make:product-variation --controllers
+        - php artisan make:product-variation --controllers  (y - Admin/ProductVariationProductSpecificationController)
         - php artisan vendor:publish --provider="PortedCheese\ProductVariation\ServiceProvider" --tag=public --force
+        - npm rub
+        Проверить переопределение:
+        - Admin/ProductVariationController > store, update
+        - Resources/ProductVariation > add specifications
+        - Models/ProductVariation > specifications, specificationsArray
+        - Observers/ProductVariationObserver > deleting
+        - Components > ProductVariationList, AppProductVariation, EditProductVariation 
+        
         
     v1.2.0-v1.2.2: measurement (category-product ^1.4)
         - новый параметр конфига: measurementAdminRoutes(true)

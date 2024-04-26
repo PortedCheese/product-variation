@@ -1,5 +1,5 @@
 <template>
-    <div class="modal fade" id="editVariationModal" tabindex="-1" aria-labelledby="editVariationModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editVariationModal" tabindex="-1" aria-labelledby="editVariationModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -18,6 +18,15 @@
                                 </template>
                             </template>
                         </div>
+
+                        <add-new-variation-specification :available="this.available"
+                                                         :specifications="this.specifications"
+                                                         :variation-specs="this.variation.specifications"
+                                                         @returnSpecValues="getSpecValues"
+                                                         @returnEditMode="setEditMode"
+                                                         :reset-spec-values="this.resetSpecValues"
+                                                         v-if="this.canAddSpecifications"
+                        ></add-new-variation-specification>
 
                         <div class="form-group">
                             <label for="edit-sku">Артикул</label>
@@ -101,13 +110,28 @@
 </template>
 
 <script>
+    import AddNewVariationSpecification from "./AddProductVariationProductSpecificationComponent"
     export default {
         name: "EditProductVariationComponent",
+
+        components: {
+            "add-new-variation-specification": AddNewVariationSpecification,
+        },
 
         props: {
             measurements: {
               required: true,
               type: Array
+            },
+            available: {
+                required: false,
+                type: Array,
+            },
+            specifications: {
+                required: false,
+            },
+            canAddSpecifications: {
+                required: false
             }
         },
 
@@ -116,6 +140,9 @@
                 variation: {},
                 errors: [],
                 loading: false,
+                specValues: [],
+                specIds: [],
+                resetSpecValues: false
             }
         },
 
@@ -124,10 +151,23 @@
         },
 
         methods: {
+            //  характеристики для редактирования вариации переданы в дочерний компонент
+            setEditMode(data){
+              if (data["editMode"])
+                  this.resetSpecValues = false;
+            },
+            getSpecValues(data){
+                this.specValues = data["specValues"];
+                for (let i in this.specValues ){
+                    this.specIds[i] = this.specValues[i].product_specification_id;
+                }
+            },
+
             initEditable(variation) {
                 this.variation = Object.assign({}, variation);
                 this.variation.sale = !!this.variation.sale;
                 $("#editVariationModal").modal("show");
+                this.resetSpecValues  = true;
             },
 
             updateVariation() {
@@ -140,7 +180,8 @@
                         price: this.variation.price,
                         sale_price: this.variation.sale_price,
                         sale: this.variation.sale ? 1 : 0,
-                        measurement: this.variation.measurement
+                        measurement: this.variation.measurement,
+                        specificationIds: this.specIds
                     })
                     .then(response => {
                         let data = response.data;
@@ -154,6 +195,8 @@
                                 timer: 1500
                             });
                             this.$emit("update-variation");
+                            this.specIds = [];
+                            this.resetSpecValues = true;
                         }
                     })
                     .catch(error => {

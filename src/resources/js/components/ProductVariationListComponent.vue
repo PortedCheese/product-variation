@@ -5,6 +5,7 @@
                      :available="this.available"
                      :specifications="this.specifications"
                      :measurements="measurements" v-on:add-new-variation="getList" v-if="canCreate"
+                     :can-add-specifications="this.canAddSpecifications"
             ></add-new>
             <div class="card-header" v-else>
                 <h5 class="card-title">Вариации</h5>
@@ -25,12 +26,20 @@
                         </thead>
                         <tbody>
                         <tr v-for="item in variations">
-                            <td>{{ item.sku }}</td>
+                            <td>
+                                {{ item.sku }}<br>
+                                <span v-for="spec in item.specifications">
+                                    <span v-if="spec.code" class="badge mr-2" :style="{backgroundColor:spec.code}">{{ spec.value }}</span>
+                                    <span v-else class="small text-muted mr-2">{{ spec.value }}</span>
+                                </span>
+                            </td>
                             <td>{{ item.full_measurement }}</td>
                             <td>{{ item.price }}</td>
                             <td>{{ item.sale_price }}</td>
                             <td>{{ item.sale ? "Да" : "Нет" }}</td>
-                            <td>{{ item.description }}</td>
+                            <td>
+                                {{ item.description }}
+                            </td>
                             <td>
                                 <div role="toolbar" class="btn-toolbar">
                                     <div class="btn-group mr-1">
@@ -65,7 +74,10 @@
                 </div>
             </div>
         </div>
-        <edit-form v-on:update-variation="getList" :measurements="measurements"></edit-form>
+        <edit-form v-on:update-variation="getList"
+                   :can-add-specifications="this.canAddSpecifications"
+                   :measurements="measurements" :available="this.available" :specifications="this.specifications">
+        </edit-form>
     </div>
 </template>
 
@@ -96,6 +108,9 @@
             canCreate: {
                 required: true,
                 type: Number
+            },
+            canAddSpecifications: {
+                required: true
             },
             measurements: {
               required: true,
@@ -187,6 +202,7 @@
                                 let data = response.data;
                                 if (data.success) {
                                     this.getList();
+                                    this.getSpec();
                                     Swal.fire({
                                         position: "top-end",
                                         type: "success",
@@ -237,6 +253,7 @@
                                 let data = response.data;
                                 if (data.success) {
                                     this.getList();
+                                    this.getSpec();
                                     Swal.fire({
                                         position: "top-end",
                                         type: "success",
