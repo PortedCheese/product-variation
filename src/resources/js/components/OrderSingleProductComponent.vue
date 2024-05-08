@@ -1,6 +1,6 @@
 <template>
     <form>
-        <product-variations :variations="variations" v-model="chosenVariation"></product-variations>
+        <product-variations :specifications="specifications" :variations="variations" v-model="chosenVariation"></product-variations>
 
         <div class="btn-group"
              role="group">
@@ -17,14 +17,20 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="orderProductLabel">
-                            Заказать товар <span v-if="variationData">{{ variationData.description }}</span>
+                        <h5 class="modal-title d-flex flex-column" id="orderProductLabel">
+                            <span>Заказать товар <span v-if="variationData">{{ variationData.description }}</span></span>
+                            <span class="small text-muted" v-if="variationData.specifications">
+                                <span class="mr-2" v-for="(item,index) in variationData.specifications">
+                                    {{ item.title }}: {{ item.value }}
+                                </span>
+                            </span>
                         </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
+
                         <form id="orderProductForm">
                             <div class="alert alert-danger" role="alert" v-if="Object.keys(errors).length">
                                 <template v-for="field in errors">
@@ -134,6 +140,10 @@
             policyUrl: {
                 type: String|Boolean,
                 required: true
+            },
+            specifications:{
+                type: Object,
+                required: false
             }
         },
 

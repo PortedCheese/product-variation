@@ -8,6 +8,7 @@ use App\Order;
 use App\OrderItem;
 use App\OrderState;
 use App\ProductVariation;
+use Illuminate\Support\Facades\Log;
 
 class OrderActionsManager
 {
@@ -104,6 +105,13 @@ class OrderActionsManager
             }
         }
         $productId = $variation->product_id;
+        // характеристики
+        $specifications = null;
+        if ($variation->specifications){
+            foreach ($variation->specificationsArray as $key => $item){
+                $specifications[$item->title] = $item->value;
+            }
+        }
 
         try {
             $orderItem = $order->items()->create([
@@ -113,6 +121,7 @@ class OrderActionsManager
                 "description" => $variation->description,
                 "product_id" => $productId,
                 "variation_id" => $variation->id,
+                "specifications" =>  json_encode($specifications)
             ]);
         } catch (\Exception $exception) {
             return false;

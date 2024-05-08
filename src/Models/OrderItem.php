@@ -15,8 +15,16 @@ class OrderItem extends Model
         "title",
         "product_id",
         "variation_id",
-        "measurement"
+        "measurement",
+        "specifications"
     ];
+
+
+    public function getSpecificationsArrayAttribute()
+    {
+        return $this->specifications? json_decode($this->specifications) : [];
+    }
+
 
     /**
      * Измерение

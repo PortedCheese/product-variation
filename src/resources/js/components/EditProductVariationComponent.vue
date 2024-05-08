@@ -151,10 +151,12 @@
         },
 
         methods: {
-            //  характеристики для редактирования вариации переданы в дочерний компонент
+            //  характеристики для редактирования вариации переданы
             setEditMode(data){
               if (data["editMode"])
                   this.resetSpecValues = false;
+              if (data["specValues"])
+                  this.getSpecValues(data)
             },
             getSpecValues(data){
                 this.specValues = data["specValues"];

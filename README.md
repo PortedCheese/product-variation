@@ -67,10 +67,13 @@
         - npm rub
         Проверить переопределение:
         - Admin/ProductVariationController > store, update
-        - Resources/ProductVariation > add specifications
-        - Models/ProductVariation > specifications, specificationsArray
+        - Resources/admin/product-variations > add specifications; 
+            Resourses/admin/orders/show, Resources/site/variations/show;
+            Resources/notifications
+        - Models/ProductVariation > specifications, specificationsArray; Models/OrderItem > specifications
         - Observers/ProductVariationObserver > deleting
-        - Components > ProductVariationList, AppProductVariation, EditProductVariation 
+        - Helpers/OrderActionsManager > addItemToOrder
+        - Components > ProductVariationList, AddProductVariation, EditProductVariation, ChoodrProductVariation, OrderSingleProduct
         
         
     v1.2.0-v1.2.2: measurement (category-product ^1.4)

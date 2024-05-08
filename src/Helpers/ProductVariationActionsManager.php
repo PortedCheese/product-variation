@@ -35,6 +35,42 @@ class ProductVariationActionsManager
     }
 
     /**
+     * @param Product $product
+     * @return mixed
+     *
+     */
+    public function getVariationsSpecificationsByProduct(Product $product)
+    {
+        $key = "product-variation-actions-getVariationsSpecificationsByProduct:{$product->id}";
+        $collection = Cache::rememberForever($key, function() use ($product) {
+            $variations = $this->getVariationsByProduct($product);
+            $result = [];
+            $merge = [];
+            $specifications = [];
+            foreach ($variations as $variation){
+                if (! $variation->disabled_at)
+                    $specifications[] = $variation->specificationsArray;
+            }
+
+            foreach ($specifications as $key => $item){
+                $merge = array_merge($merge, $item);
+            }
+            $merge = array_unique($merge, SORT_REGULAR);
+            foreach ($merge as $item) {
+                $result[$item->title][] = [
+                    "id"=> $item->id,
+                    "specification_id"=> $item->specification_id,
+                    "value" => $item->value,
+                    "code" => $item->code
+                ];
+            }
+            return $result ;
+        });
+
+        return $collection;
+    }
+
+    /**
      * Очистить кэш.
      *
      * @param Product $product
@@ -42,6 +78,7 @@ class ProductVariationActionsManager
     public function clearProductVariationsCache(Product $product)
     {
         Cache::forget("product-variation-actions-getVariationsByProduct:{$product->id}");
+        Cache::forget("product-variation-actions-getVariationsSpecificationsByProduct:{$product->id}");
         $category = $product->category;
         $this->clearPricesCache($category);
     }

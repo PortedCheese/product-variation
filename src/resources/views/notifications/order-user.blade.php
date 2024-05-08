@@ -7,7 +7,7 @@
 | Товар | Количество | Сумма |
 | :--- | --------: | ---: |
 @foreach ($items as $item)
-| {{ $item->title }} ({{ $item->description }}) | {{ $item->quantity }} {{ $item->measurement }} | {{ $item->total }} |
+| {{ $item->title }}: {{ $item->description }}. @isset($item->specifications) @foreach($item->specificationsArray as $key => $value) {{ $key }} - {{ $value }}.  @endforeach @endisset | {{ $item->quantity }} {{ $item->short_measurement }} | {{ $item->total }} |
 @endforeach
 @endcomponent
 

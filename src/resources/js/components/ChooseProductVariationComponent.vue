@@ -1,5 +1,12 @@
 <template>
     <div class="form-group variation-price" v-if="showChoose">
+        <div v-if="specifications">
+            <choose-specification-component :available="specifications"
+                                            :chose="chose" @changeChoosing="changeChose"
+                                            :variations="variations"
+                                            :current="this.variationData.specifications"
+            ></choose-specification-component>
+        </div>
         <div v-if="variationData" class="variation-price__wrapper">
             <div class="variation-price__prices">
                 <div class="rub-format variation-price__value">
@@ -23,14 +30,18 @@
                     {{ variationData.description }}
                 </div>
             </div>
+            <div v-if="variationData.specifications" class="variation-price__about">
+                <span class="text-muted mr-2" v-for="spec in variationData.specifications">{{ spec.value }}</span>
+            </div>
         </div>
 
         <div class="choose-variation" v-if="!variationData">
             <span class="choose-variation__unavailabe">Нет в наличии</span>
         </div>
-        <div class="choose-variation" v-if="variations.length > 1 && variationData">
+
+        <div class="choose-variation" v-if="specVariations.length > 1 && variationData">
             <div class="сustom-control custom-radio choose-variation__item"
-                 v-for="variation in variations">
+                 v-for="variation in specVariations">
                 <input type="radio"
                        :id="'customRadio' + variation.id"
                        name="customRadio"
@@ -42,17 +53,19 @@
                 <label class="custom-control-label choose-variation__label"
                       v-if="variation.disabled_at"
                       :for="'customRadio' + variation.id">
-                   <span>
-                       {{ variation.description }}
-                   </span>
+                    <p class="mb-0">
+                        {{ variation.description }}<br>
+                        <span class="text-muted mr-2" v-for="spec in variation.specifications">{{ spec.value }}</span>
+                    </p>
                   <span class="choose-variation__prices">Нет в наличии</span>
                 </label>
                 <label class="custom-control-label choose-variation__label"
                        v-else
                        :for="'customRadio' + variation.id">
-                    <span>
-                        {{ variation.description }}
-                    </span>
+                    <p class="mb-0">
+                        {{ variation.description }}<br>
+                        <span class="text-muted mr-2" v-for="spec in variation.specifications">{{ spec.value }}</span>
+                    </p>
                     <span class="rub-format choose-variation__value">
                         <span class="rub-format__value">
                             <span v-if="variation.measurement" class="rub-format__measurement">{{ variation.short_measurement }}</span> {{ variation.human_price }}
@@ -76,9 +89,10 @@
 </template>
 
 <script>
+    import ChooseSpecificationComponent from "./ChooseSpecificationComponent";
     export default {
         name: "ChooseProductVariationComponent",
-
+        components: {ChooseSpecificationComponent},
         model: {
             prop: "chosen",
             event: "change"
@@ -88,6 +102,11 @@
             variations: {
                 type: Array,
                 required: true
+            },
+
+            specifications: {
+                type: Object,
+                required: false
             },
 
             chosen: {
@@ -104,22 +123,13 @@
         data() {
             return {
                 chosenVariation: "",
+                chose: [],
             }
         },
 
         created() {
             this.chosenVariation = this.chosen;
-            if (! this.chosenVariation && this.variations.length) {
-                for (let item in this.variations) {
-                    if (this.variations.hasOwnProperty(item)) {
-                        if (! this.variations[item].disabled_at) {
-                            this.chosenVariation = this.variations[item].id;
-                            this.$emit("change", this.chosenVariation);
-                            break;
-                        }
-                    }
-                }
-            }
+            this.setChosenVariation();
         },
 
         computed: {
@@ -133,6 +143,56 @@
                     }
                 }
                 return variation;
+            },
+            specVariations() {
+                let specVariations = [];
+                if (this.specifications && this.chose.length) {
+                    for (let item of this.variations) {
+                        let push = 0;
+                        if (item.specifications){
+                            for (let spec of item.specifications) {
+                                for (let ch of this.chose) {
+                                    if (spec.id === ch.id) {
+                                        push++;
+                                        break;
+                                    }
+                                }
+                            }
+
+                        }
+                        if (push == this.chose.length)
+                            specVariations.push(item)
+                    }
+                }
+                else
+                    specVariations =  this.variations;
+                return specVariations;
+            }
+        },
+
+        methods: {
+            changeChose(data) {
+                this.chose = data["spec"];
+                this.setChosenVariation(true);
+            },
+
+            setChosenVariation(spec = false){
+                if (spec && ! this.specVariations.length)
+                {
+                    this.chosenVariation = null
+                    this.$emit("change", this.chosenVariation);
+                }
+                if (spec || (! this.chosenVariation && this.specVariations.length)) {
+                    for (let item in this.specVariations) {
+                        if (this.specVariations.hasOwnProperty(item)) {
+                            if (! this.specVariations[item].disabled_at) {
+                                this.chosenVariation = this.specVariations[item].id;
+                                this.$emit("change", this.chosenVariation);
+                                break;
+                            }
+                        }
+                    }
+                }
             }
         }
     }

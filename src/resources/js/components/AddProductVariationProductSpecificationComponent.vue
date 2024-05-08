@@ -134,7 +134,8 @@
                         })
                     }
                     this.$emit('returnEditMode', {
-                        editMode: true
+                        editMode: true,
+                        specValues: this.specValues
                     })
                 }
                 return this.specValues

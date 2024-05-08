@@ -41,6 +41,12 @@
                                     <a href="{{ route("admin.products.show", ["product" => $item->product]) }}" target="_blank">
                                         {{ $item->product->title }}
                                     </a>
+                                    <br>
+                                    @isset($item->specifications)
+                                        @foreach($item->specificationsArray as $spec => $value)
+                                            <small class="text-muted mr-2">{{ $spec }}: {{ $value }}</small>
+                                        @endforeach
+                                    @endisset
                                 </td>
                                 <td>{{ $item->sku }}</td>
                                 <td>{{ $item->price }}</td>
