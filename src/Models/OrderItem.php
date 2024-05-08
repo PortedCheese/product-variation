@@ -22,7 +22,7 @@ class OrderItem extends Model
      * Измерение
      * @return mixed|string
      */
-    public function getMeasurementAttribute()
+    public function getShortMeasurementAttribute()
     {
         return ! empty($this->measurement) ? $this->measurement  : "шт";
     }
