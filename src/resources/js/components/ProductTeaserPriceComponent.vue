@@ -1,8 +1,8 @@
 <template>
-    <div class="variation-price">
-        <product-variations :variations="variations" v-model="chosenVariation" :show-choose="false"></product-variations>
+    <div class="variation-price mr-0">
+        <product-variations :specifications="specifications" :variations="variations" v-model="chosenVariation" :show-choose="false"></product-variations>
 
-        <div v-if="variationData" class="variation-price__wrapper">
+        <div v-if="variationData && !specifications" class="variation-price__wrapper">
             <div class="variation-price__prices">
                 <div class="rub-format variation-price__value">
                     <span class="rub-format__value">
@@ -32,7 +32,8 @@
             <a :href="productUrl"
                v-if="variationData && variationsMoreCount >= 1"
                class="variation-price__more">
-                Еще {{ variationsMoreCount }} {{ variationMoreText }}
+                <span v-if="! Object.keys(specifications).length">Еще {{ variationsMoreCount }} {{ variationMoreText }}</span>
+                <span v-else>Еще варианты</span>
             </a>
             <span v-else class="variation-price__more variation-price__more_hidden">
                 &nbsp;
@@ -55,6 +56,10 @@
             variations: {
                 type: Array,
                 required: true
+            },
+            specifications:{
+                type: Object,
+                required: false
             },
 
             productUrl: {

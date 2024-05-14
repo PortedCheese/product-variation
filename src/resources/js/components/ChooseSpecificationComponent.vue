@@ -1,19 +1,26 @@
 <template>
-    <div class="form-row" v-if="this.available">
-        <input name type="hidden" id="specInput" v-model="chosenSpec">
-        <div class="form-group col-12" v-for="(item, index) in this.available">
-            <label @click="resetChooseSpec(item[0].specification_id)" ><small>{{  index }}</small></label>
-            <br>
-            <button type="button"
-                    class="btn btn-sm btn-outline-primary mr-2 mb-2"
-                    :class="checkActive(obj) ? 'active' : ''"
-                    :disabled="checkAvailable(obj)"
-                    @click="btnClick(obj)"
-                    v-for="obj in item">
-                <span v-if="obj.code" class="badge" :style="{ backgroundColor: obj.code }">&nbsp;</span>
-                {{ obj.value }}
-            </button>
-            <button v-if="variations && variations.length >1" type="button" class="close"  @click="resetChooseSpec(item[0].specification_id)">&times;</button>
+    <div v-if="this.available && this.variations.length">
+        <a v-if="! fullMode  && this.current"  class="" href="#" role="button" :id="'#dropdownTeaser'+this.variations[0].product_id" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Доступные параметры
+        </a>
+        <div :class="! fullMode && this.variations  && this.current? 'dropdown-menu':'form-row' " :aria-labelledby="'dropdownTeaser'+this.variations[0].product_id">
+            <input name type="hidden" id="specInput" v-model="chosenSpec">
+            <div class="form-group col-12" v-for="(item, index) in this.available">
+                <label><small>{{  index }}</small></label>
+                <button v-if="variations && variations.length >1 && fullMode" type="button" class="close"  @click="resetChooseSpec(item[0].specification_id)">&times;</button>
+                <br>
+                <button type="button"
+                        class="btn btn-sm btn-outline-primary mr-2 mb-2"
+                        :class="checkActive(obj) ? 'active' : ''"
+                        :disabled="checkAvailable(obj)"
+                        @click="btnClick(obj)"
+                        v-for="obj in item">
+                    <span v-if="obj.code" class="badge" :style="{ backgroundColor: obj.code }">&nbsp;</span>
+                    <span v-if="fullMode || !obj.code">{{ obj.value }}</span>
+                </button>
+
+            </div>
+
         </div>
     </div>
 </template>
@@ -39,6 +46,10 @@
             current:{
                 type: Array,
                 required: false
+            },
+            fullMode: {
+                type: Boolean,
+                required: true
             }
         },
 
@@ -50,10 +61,12 @@
 
         created() {
             //this.$parent.$on("change",  this.setActive());
-
-            for (let spec of this.current){
-                this.chosenSpec.push(spec);
+            if (this.current){
+                for (let spec of this.current){
+                    this.chosenSpec.push(spec);
+                }
             }
+
             this.changeChose();
             this.$emit("changeChoosing", {spec: this.chosenSpec} );
         },

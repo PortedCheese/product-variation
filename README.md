@@ -64,7 +64,9 @@
         - php artisan migrate
         - php artisan make:product-variation --controllers  (y - Admin/ProductVariationProductSpecificationController)
         - php artisan vendor:publish --provider="PortedCheese\ProductVariation\ServiceProvider" --tag=public --force
-        - npm rub
+        - npm run
+        - php artisan cache:clear
+        - php artisan queue:restart
         Проверить переопределение:
         - Admin/ProductVariationController > store, update
         - Resources/admin/product-variations > add specifications; 
@@ -73,7 +75,7 @@
         - Models/ProductVariation > specifications, specificationsArray; Models/OrderItem > specifications
         - Observers/ProductVariationObserver > deleting
         - Helpers/OrderActionsManager > addItemToOrder
-        - Components > ProductVariationList, AddProductVariation, EditProductVariation, ChoodrProductVariation, OrderSingleProduct
+        - Components > ProductVariationList, AddProductVariation, EditProductVariation, ChooseProductVariation, OrderSingleProduct,ProductTeaserPrice
         
         
     v1.2.0-v1.2.2: measurement (category-product ^1.4)

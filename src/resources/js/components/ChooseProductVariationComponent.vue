@@ -1,10 +1,11 @@
 <template>
-    <div class="form-group variation-price" v-if="showChoose">
+    <div class="form-group variation-price" v-if="showChoose || specifications">
         <div v-if="specifications">
             <choose-specification-component :available="specifications"
                                             :chose="chose" @changeChoosing="changeChose"
                                             :variations="variations"
                                             :current="this.variationData.specifications"
+                                            :full-mode="showChoose"
             ></choose-specification-component>
         </div>
         <div v-if="variationData" class="variation-price__wrapper">
@@ -39,7 +40,7 @@
             <span class="choose-variation__unavailabe">Нет в наличии</span>
         </div>
 
-        <div class="choose-variation" v-if="specVariations.length > 1 && variationData">
+        <div class="choose-variation" v-if="showChoose && specVariations.length > 1 && variationData">
             <div class="сustom-control custom-radio choose-variation__item"
                  v-for="variation in specVariations">
                 <input type="radio"
