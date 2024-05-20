@@ -56,6 +56,16 @@ class OrderItem extends Model
     }
 
     /**
+     * Вариация
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function variation()
+    {
+        return $this->belongsTo(\App\ProductVariation::class);
+    }
+
+    /**
      * Формат итого.
      *
      * @return string

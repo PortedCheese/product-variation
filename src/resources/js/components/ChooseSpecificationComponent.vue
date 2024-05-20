@@ -1,9 +1,13 @@
 <template>
     <div v-if="this.available && this.variations.length">
-        <a v-if="! fullMode  && this.current"  class="" href="#" role="button" :id="'#dropdownTeaser'+this.variations[0].product_id" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a v-if="!this.fullMode && this.variations" href="#" role="button"
+           :id="'#dropdownTeaser'+this.variations[0].product_id"
+           data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
             Доступные параметры
         </a>
-        <div :class="! fullMode && this.variations  && this.current? 'dropdown-menu':'form-row' " :aria-labelledby="'dropdownTeaser'+this.variations[0].product_id">
+        <div :class="!this.fullMode && this.variations? 'dropdown-menu':'form-row' "
+             :aria-labelledby="'dropdownTeaser'+this.variations[0].product_id">
             <input name type="hidden" id="specInput" v-model="chosenSpec">
             <div class="form-group col-12" v-for="(item, index) in this.available">
                 <label><small>{{  index }}</small></label>

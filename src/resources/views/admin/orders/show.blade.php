@@ -42,7 +42,26 @@
                                         {{ $item->product->title }}
                                     </a>
                                     <br>
-                                    @isset($item->specifications)
+                                    @if ($item->variation->image)
+                                        @pic([
+                                        "image" => $item->variation->image,
+                                        "template" => "small",
+                                        "imgClass" => "img-thumbnail",
+                                        "grid" => [
+                                        "product-show-thumb" => 992,
+                                        ],
+                                        ])
+                                    @elseif ($item->product->cover)
+                                        @pic([
+                                        "image" => $item->product->cover,
+                                        "template" => "small",
+                                        "imgClass" => "img-thumbnail",
+                                        "grid" => [
+                                        "product-show-thumb" => 992,
+                                        ],
+                                        ])
+                                    @endif
+                                    @isset($item->specificationsArray)
                                         @foreach($item->specificationsArray as $spec => $value)
                                             <small class="text-muted mr-2">{{ $spec }}: {{ $value }}</small>
                                         @endforeach

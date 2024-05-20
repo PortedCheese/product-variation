@@ -1,6 +1,7 @@
 @can("viewAny", \App\ProductVariation::class)
     <admin-variation-list get-url="{{ route("admin.products.variations.index", ["product" => $product]) }}"
                           :measurements="{{ \App\Measurement::all()}}"
+                          images-url="{{ route('admin.vue.gallery.get', ['id' => $product->id, 'model' => 'products']) }}"
                           :can-create="{{ \Illuminate\Support\Facades\Auth::user()->can("create", \App\ProductVariation::class) ? 1 : 0 }}"
                           :can-add-specifications="{{ config("product-variation.enableProductVariationsProductSpecifications")? 1 : 0  }}"
                           post-url="{{ route("admin.products.variations.store", ["product" => $product]) }}"

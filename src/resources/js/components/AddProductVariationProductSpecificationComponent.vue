@@ -98,6 +98,9 @@
             },
             addMode:{
                 required: false
+            },
+            editMode:{
+                required: false
             }
         },
 
@@ -121,7 +124,15 @@
                         addMode: true
                     })
                 }
-                // сброс и заполнение характеристик при создании новой вариации
+                //сброс характеристик (если их нет у вариации)
+                if (! this.variationSpecs && this.resetSpecValues){
+                    this.specValues = [];
+                    this.$emit('returnEditMode', {
+                        editMode: true,
+                        specValues: this.specValues
+                    })
+                }
+                //сброс и заполнение характеристик (если они есть у вариации)
                 if (this.variationSpecs && this.resetSpecValues){
                     this.specValues = [];
                     for (let spec of this.variationSpecs){

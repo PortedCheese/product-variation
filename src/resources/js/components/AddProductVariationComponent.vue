@@ -42,6 +42,40 @@
                             ></add-new-variation-specification>
 
                             <div class="form-group">
+                                <a data-toggle="collapse" href="#collapseProductImages" role="button" aria-expanded="false">
+                                    Изображение для вариации
+                                </a>
+                                <div class="collapse mt-3" id="collapseProductImages">
+                                    <div class="card card-body">
+                                        <div>
+                                            <input  type="radio"
+                                                    name="product_image_id"
+                                                    id="image"
+                                                    :checked="! product_image_id"
+                                                    v-model="product_image_id">
+                                            </input>
+                                            <label for="image">
+                                                Без изображения
+                                            </label>
+                                        </div>
+                                        <div class="d-flex flex-wrap">
+                                            <div v-for="image in images" class="mr-2 mb-2">
+                                                <input  type="radio"
+                                                        name="product_image_id"
+                                                        :id="'image'+image.id"
+                                                        :value="image.id"
+                                                        v-model="product_image_id">
+                                                </input>
+                                                <label :for="'image'+image.id">
+                                                    <img :src="image.src" :alt="image.name" class="img-thumbnail">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="sku">Артикул</label>
                                 <input type="text"
                                        id="sku"
@@ -149,6 +183,10 @@
             },
             canAddSpecifications: {
                 required: false
+            },
+            images:{
+                required: true,
+                type: Array
             }
         },
 
@@ -162,6 +200,7 @@
                 sale_price: 0,
                 sale: false,
                 measurement: "",
+                product_image_id: null,
                 specValues: [],
                 specIds: [],
                 resetSpecValues: false,
@@ -175,7 +214,7 @@
                     result = false;
                 }
                 return result;
-            }
+            },
         },
 
         methods: {
@@ -190,6 +229,7 @@
                     this.specIds[i] = this.specValues[i].product_specification_id;
                 }
             },
+
             postNewVariation() {
                 this.loading = true;
                 this.errors = [];
@@ -201,7 +241,8 @@
                         sale_price: this.sale_price,
                         sale: this.sale ? 1 : 0,
                         measurement: this.measurement,
-                        specificationIds: this.specIds
+                        specificationIds: this.specIds,
+                        image_id: this.product_image_id
                     })
                     .then(response => {
                         let data = response.data;
@@ -224,6 +265,7 @@
                             this.specValues = [];
                             this.measurement = "";
                             this.resetSpecValues = true;
+                            this.product_image_id = null;
                         }
                     })
                     .catch(error => {
@@ -243,7 +285,8 @@
                     .finally(() => {
                         this.loading = false;
                     })
-            }
+            },
+
         }
     }
 </script>

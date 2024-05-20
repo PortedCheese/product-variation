@@ -57,7 +57,7 @@
     
 ### Versions
     
-    v1.3.0: variation specifications 
+    v1.3.0: variation specifications (category-product ^1.6)
         Обновление:
         - новый параметр конфига:  "productVariationSpecificationAdminRoutes" => true,
                                    "enableProductVariationsProductSpecifications" => true
@@ -68,11 +68,13 @@
         - php artisan cache:clear
         - php artisan queue:restart
         Проверить переопределение:
+        - Http/Resources/ProductVariation > specifications, product_image_url
         - Admin/ProductVariationController > store, update
-        - Resources/admin/product-variations > add specifications; 
+        - Resources/admin/product-variations > add specifications,  
+            Resources/admin/product-variations/includes/list > images-url, 
             Resourses/admin/orders/show, Resources/site/variations/show;
             Resources/notifications
-        - Models/ProductVariation > specifications, specificationsArray; Models/OrderItem > specifications
+        - Models/ProductVariation > specifications, specificationsArray, image, clearImage; Models/OrderItem > specifications, variation
         - Observers/ProductVariationObserver > deleting
         - Helpers/OrderActionsManager > addItemToOrder
         - Components > ProductVariationList, AddProductVariation, EditProductVariation, ChooseProductVariation, OrderSingleProduct,ProductTeaserPrice

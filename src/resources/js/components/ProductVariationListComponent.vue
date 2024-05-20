@@ -4,6 +4,7 @@
             <add-new :post-url="postUrl"
                      :available="this.available"
                      :specifications="this.specifications"
+                     :images="this.images"
                      :measurements="measurements" v-on:add-new-variation="getList" v-if="canCreate"
                      :can-add-specifications="this.canAddSpecifications"
             ></add-new>
@@ -16,7 +17,7 @@
                         <thead>
                         <tr>
                             <th>Артикул</th>
-                            <th>Измерение</th>
+                            <th>Изм.</th>
                             <th>Цена</th>
                             <th>Старая цена</th>
                             <th>Скидка</th>
@@ -28,6 +29,9 @@
                         <tr v-for="item in variations">
                             <td>
                                 {{ item.sku }}<br>
+                                <img v-if="item.product_image_id && item.product_image_url"
+                                     :src="item.product_image_url" style="width: 50px;"
+                                     class="img-thumbnail">
                                 <span v-for="spec in item.specifications">
                                     <span v-if="spec.code" class="badge mr-2" :style="{backgroundColor:spec.code}">{{ spec.value }}</span>
                                     <span v-else class="small text-muted mr-2">{{ spec.value }}</span>
@@ -76,7 +80,8 @@
         </div>
         <edit-form v-on:update-variation="getList"
                    :can-add-specifications="this.canAddSpecifications"
-                   :measurements="measurements" :available="this.available" :specifications="this.specifications">
+                   :measurements="measurements" :available="this.available" :specifications="this.specifications"
+                   :images="this.images">
         </edit-form>
     </div>
 </template>
@@ -115,6 +120,10 @@
             measurements: {
               required: true,
               type: Array
+            },
+            imagesUrl:{
+                required: true,
+                type: String
             }
         },
 
@@ -124,16 +133,40 @@
                 variations: [],
                 errors: [],
                 available: [],
-                specifications: []
+                specifications: [],
+                images: []
             }
         },
 
         created() {
             this.getList();
             this.getSpec();
+            this.getImages();
         },
 
         methods: {
+            getImages(){
+                axios.get(this.imagesUrl)
+                    .then(response => {
+                        this.errors = false;
+                        let result = response.data;
+                        if (result.success) {
+                            this.images = result.images;
+                        }
+                    })
+                    .catch(error => {
+                        let data = error.response.data;
+                        Swal.fire({
+                            type: "error",
+                            title: "Усп...",
+                            text: "Что то пошло не так",
+                            footer: data.message
+                        })
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    })
+            },
             getSpec() {
                 this.loading = true;
                 axios

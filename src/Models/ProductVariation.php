@@ -3,6 +3,7 @@
 namespace PortedCheese\ProductVariation\Models;
 
 use App\Cart;
+use App\Image;
 use App\Product;
 use App\Measurement;
 use App\ProductSpecification;
@@ -18,6 +19,7 @@ class ProductVariation extends Model
         "description",
         "sale",
         "disabled_at",
+        "product_image_id"
     ];
 
     /**
@@ -28,6 +30,26 @@ class ProductVariation extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+
+    /**
+     * Изображение
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function image(){
+        return $this->belongsTo(Image::class, "product_image_id");
+    }
+
+
+    /**
+     * Отвязать изображение.
+     */
+    public function clearImage()
+    {
+        $this->image()->dissociate();
+        $this->save();
     }
 
     /**

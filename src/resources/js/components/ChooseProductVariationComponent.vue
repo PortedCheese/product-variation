@@ -1,6 +1,6 @@
 <template>
-    <div class="form-group variation-price" v-if="showChoose || specifications">
-        <div v-if="specifications">
+    <div :class="showChoose? 'form-group variation-price':''" v-if="showChoose || specifications">
+        <div class="variation-price__specifications" v-if="Object.keys(specifications).length">
             <choose-specification-component :available="specifications"
                                             :chose="chose" @changeChoosing="changeChose"
                                             :variations="variations"
@@ -9,6 +9,13 @@
             ></choose-specification-component>
         </div>
         <div v-if="variationData" class="variation-price__wrapper">
+            <div class="product-gallery-btns float-right">
+                <div v-if="variationData.product_image_id && showChoose" :data-selector="'.cell'+variationData.product_image_id" class="btn">
+                    <img :src="variationData.product_image_url"
+                         class="img-thumbnail"
+                         :alt="variationData.description">
+                </div>
+            </div>
             <div class="variation-price__prices">
                 <div class="rub-format variation-price__value">
                     <span class="rub-format__value">

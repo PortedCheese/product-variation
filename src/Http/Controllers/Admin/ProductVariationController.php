@@ -3,6 +3,7 @@
 namespace PortedCheese\ProductVariation\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Image;
 use App\Measurement;
 use App\Product;
 use App\ProductVariation;
@@ -60,6 +61,22 @@ class ProductVariationController extends Controller
         catch (\Exception $e){
             Log::error($e);
         }
+        if (! $request->get("image_id"))
+            $variation->clearImage();
+        else{
+            try
+            {
+                $image = Image::find($request->get("image_id"));
+                if (isset($image)){
+                    $variation->product_image_id = $image->id;
+                    $variation->save();
+                }
+            }
+            catch (\Exception $e){
+                Log::error($e);
+            }
+        }
+
         try
         {
             $specifications = $request->get("specificationIds");
@@ -88,6 +105,7 @@ class ProductVariationController extends Controller
             "sale_price" => ["nullable", "numeric", "min:0"],
             "description" => ["required", "max:100"],
             "specificationIds" => ["nullable", "array"],
+            "imageId" => ["nullable", "numeric"],
         ], [], [
             "sku" => "Артикул",
             "measurements" => "Измерение",
@@ -95,6 +113,7 @@ class ProductVariationController extends Controller
             "sale_price" => "Старая цена",
             "description" => "Описание",
             "specificationIds" => "Характеристики",
+            "imageId" => "Изображение",
         ])->validate();
     }
 
@@ -126,6 +145,22 @@ class ProductVariationController extends Controller
         catch (\Exception $e){
             Log::error($e);
         }
+
+        if (! $request->get("image_id"))
+            $variation->clearImage();
+        else{
+            try
+            {
+                $image = Image::find($request->get("image_id"));
+                if (isset($image)){
+                    $variation->product_image_id = $image->id;
+                }
+            }
+            catch (\Exception $e){
+                Log::error($e);
+            }
+        }
+
         $variation->save();
 
         return response()
@@ -149,6 +184,7 @@ class ProductVariationController extends Controller
             "sale_price" => ["nullable", "numeric", "min:0"],
             "description" => ["required", "max:100"],
             "specificationIds" => ["nullable", "array"],
+            "imageId" => ["nullable", "numeric"],
         ], [], [
             "sku" => "Артикул",
             "measurement" => "Измерение",
@@ -156,6 +192,7 @@ class ProductVariationController extends Controller
             "sale_price" => "Старая цена",
             "description" => "Описание",
             "specificationIds" => "Характеристики",
+            "imageId" => "Изображение",
         ])->validate();
     }
 

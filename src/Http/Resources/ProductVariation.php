@@ -23,7 +23,8 @@ class ProductVariation extends JsonResource
         $array["human_discount"] = $model->human_discount;
         $array["short_measurement"] = $model->short_measurement;
         $array["full_measurement"] = $model->full_measurement;
-        $array["measurement"] = $model->measurement ? $model->measurement->id : null;
+        $array["measurement"] = $model->measurement?->id;
+        $array["product_image_url"] = $model->image ? route('image-filter', ['template' => 'small','filename' => $model->image->file_name]) : null;
         $array["specifications"] = $model->specificationsArray ?: null;
 
         if (strstr($request->route()->getName(), "admin") !== false) {

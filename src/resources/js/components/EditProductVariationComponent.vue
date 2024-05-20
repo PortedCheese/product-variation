@@ -26,7 +26,43 @@
                                                          @returnEditMode="setEditMode"
                                                          :reset-spec-values="this.resetSpecValues"
                                                          v-if="this.canAddSpecifications"
+
                         ></add-new-variation-specification>
+
+                        <div class="form-group">
+                            <a data-toggle="collapse" href="#collapseProductImages" role="button" aria-expanded="false">
+                                Изображение для вариации
+                            </a>
+                            <div class="collapse mt-3" id="collapseProductImages">
+                                <div class="card card-body">
+                                    <div>
+                                        <input  type="radio"
+                                                name="product_image_id"
+                                                id="image"
+                                                :checked="! variation.product_image_id"
+                                                v-model="variation.product_image_id">
+                                        </input>
+                                        <label for="image" class="form-check-label" >
+                                            Без изображения
+                                        </label>
+                                    </div>
+                                    <div class="d-flex flex-wrap">
+                                        <div v-for="image in images" class="mr-2 mb-2">
+                                            <input  type="radio"
+                                                    name="product_image_id"
+                                                    :id="'image'+image.id"
+                                                    :value="image.id"
+                                                    :checked="variation.product_image_id && variation.product_image_id === image.id"
+                                                    v-model="variation.product_image_id">
+                                            </input>
+                                            <label :for="'image'+image.id">
+                                                <img :src="image.src" :alt="image.name" class="img-thumbnail">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <label for="edit-sku">Артикул</label>
@@ -132,6 +168,10 @@
             },
             canAddSpecifications: {
                 required: false
+            },
+            images:{
+                required: true,
+                type: Array
             }
         },
 
@@ -142,7 +182,7 @@
                 loading: false,
                 specValues: [],
                 specIds: [],
-                resetSpecValues: false
+                resetSpecValues: false,
             }
         },
 
@@ -160,6 +200,7 @@
             },
             getSpecValues(data){
                 this.specValues = data["specValues"];
+                if (!this.specValues.length ) this.specIds = []
                 for (let i in this.specValues ){
                     this.specIds[i] = this.specValues[i].product_specification_id;
                 }
@@ -183,7 +224,8 @@
                         sale_price: this.variation.sale_price,
                         sale: this.variation.sale ? 1 : 0,
                         measurement: this.variation.measurement,
-                        specificationIds: this.specIds
+                        specificationIds: this.specIds,
+                        image_id: this.variation.product_image_id
                     })
                     .then(response => {
                         let data = response.data;
@@ -199,6 +241,7 @@
                             this.$emit("update-variation");
                             this.specIds = [];
                             this.resetSpecValues = true;
+                            this.product_image_id = null;
                         }
                     })
                     .catch(error => {
