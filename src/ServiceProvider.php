@@ -12,9 +12,11 @@ use App\OrderState;
 use App\Product;
 use App\ProductVariation;
 use PortedCheese\BaseSettings\Events\ImageUpdate;
+use PortedCheese\CategoryProduct\Events\CategorySpecificationUpdate;
 use PortedCheese\CategoryProduct\Events\ProductListChange;
 use PortedCheese\ProductVariation\Console\Commands\ProductVariationMakeCommand;
 use PortedCheese\ProductVariation\Events\CreateNewOrder;
+use PortedCheese\ProductVariation\Listeners\ProductVariationSpecificationUpdate;
 use PortedCheese\ProductVariation\Listeners\SendNewOrderNotify;
 use PortedCheese\ProductVariation\Listeners\UpdatePricesList;
 use PortedCheese\ProductVariation\Listeners\ProductGalleryChange;
@@ -197,6 +199,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         // Обновление фото в  галерее товара
         $this->app["events"]->listen(ImageUpdate::class, ProductGalleryChange::class);
+        // Обновление характеристики категории
+        $this->app["events"]->listen(CategorySpecificationUpdate::class, ProductVariationSpecificationUpdate::class);
         // Создание заказа.
         $this->app["events"]->listen(CreateNewOrder::class, SendNewOrderNotify::class);
         // Изменение списка товаров.

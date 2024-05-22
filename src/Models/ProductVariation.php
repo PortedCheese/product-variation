@@ -9,6 +9,7 @@ use App\Measurement;
 use App\ProductSpecification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use PortedCheese\ProductVariation\Facades\ProductVariationActions;
 
 class ProductVariation extends Model
 {
@@ -65,25 +66,15 @@ class ProductVariation extends Model
     /**
      * Характеристики
      *
-     * @return BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function specifications(){
         return $this->belongsToMany(ProductSpecification::class)->orderBy('specification_id')->withTimestamps();
     }
 
-    public function getSpecificationsArrayAttribute(){
-        $array =  [];
-        foreach ($this->specifications as $item){
-            $array[$item->specification_id]= (Object)[
-                "specification_id" => $item->specification_id,
-                "title" => $item->specification->title,
-                "value" => $item->value,
-                "code" => $item->code,
-                "id" => $item->id
-            ];
 
-        }
-        return  $array;
+    public function getSpecificationsArrayAttribute(){
+        return  ProductVariationActions::getVariationSpecificationsArray($this);
     }
 
     /**

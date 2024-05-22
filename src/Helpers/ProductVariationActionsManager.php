@@ -35,6 +35,8 @@ class ProductVariationActionsManager
     }
 
     /**
+     * Все характеристики вариаций данного продукта
+     *
      * @param Product $product
      * @return mixed
      *
@@ -71,6 +73,42 @@ class ProductVariationActionsManager
     }
 
     /**
+     * Массив характеристик вариации
+     *
+     * @param ProductVariation $variation
+     * @return mixed
+     *
+     */
+    public function getVariationSpecificationsArray(ProductVariation $variation){
+
+        $key = "product-variation-actions-getVariationSpecificationsArray:{$variation->id}";
+        return  Cache::rememberForever($key, function() use ($variation) {
+            $array =  [];
+            $category = $variation->product->category;
+            foreach ($variation->specifications()->get() as $item){
+                $spec = $category->specifications()->where("specification_id",'=',$item->specification_id)->first();
+                $array[$item->specification_id]= (Object)[
+                    "specification_id" => $item->specification_id,
+                    "title" => $spec->pivot->title,
+                    "value" => $item->value,
+                    "code" => $item->code,
+                    "id" => $item->id
+                ];
+            }
+            return $array;
+        });
+    }
+    /**
+     * Очистить кэш характеристик
+     *
+     * @param Product $product
+     */
+    public function clearVariationSpecificationsArrayCache(ProductVariation $variation)
+    {
+        Cache::forget("product-variation-actions-getVariationSpecificationsArray:{$variation->id}");
+    }
+
+    /**
      * Очистить кэш.
      *
      * @param Product $product
@@ -79,6 +117,11 @@ class ProductVariationActionsManager
     {
         Cache::forget("product-variation-actions-getVariationsByProduct:{$product->id}");
         Cache::forget("product-variation-actions-getVariationsSpecificationsByProduct:{$product->id}");
+        if ($variations = $product->variations()->get()){
+            foreach ($variations as $item){
+                $this->clearVariationSpecificationsArrayCache($item);
+            }
+        }
         $category = $product->category;
         $this->clearPricesCache($category);
     }
