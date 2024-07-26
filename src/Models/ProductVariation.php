@@ -3,12 +3,16 @@
 namespace PortedCheese\ProductVariation\Models;
 
 use App\Cart;
+use App\CartProductVariationSet;
+use App\CartProductVariationSetAddon;
 use App\Image;
 use App\Product;
 use App\Measurement;
 use App\ProductSpecification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Testing\Fluent\Concerns\Has;
 use PortedCheese\ProductVariation\Facades\ProductVariationActions;
 
 class ProductVariation extends Model
@@ -112,6 +116,37 @@ class ProductVariation extends Model
             return new BelongsToMany($this->newQuery(), $this, "", "", "", "", "");
         }
     }
+
+    /**
+     * Комплекты
+     *
+     * @return HasMany
+     */
+    public function sets()
+    {
+        if (class_exists(CartProductVariationSet::class)) {
+            return $this->hasMany(CartProductVariationSet::class,"product_variation_id","id");
+        }
+        else {
+            return new HasMany($this->newQuery(), $this, "", "", "", "", "");
+        }
+    }
+
+    /**
+     * Дополнения
+     *
+     * @return HasMany
+     */
+    public function addons()
+    {
+        if (class_exists(CartProductVariationSetAddon::class)) {
+            return $this->hasMany(CartProductVariationSetAddon::class,"product_variation_id","id");
+        }
+        else {
+            return new HasMany($this->newQuery(), $this, "", "", "", "", "");
+        }
+    }
+
 
     /**
      * Формат цены.

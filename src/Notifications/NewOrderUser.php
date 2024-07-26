@@ -47,7 +47,7 @@ class NewOrderUser extends Notification implements ShouldQueue
             ->subject("Новый заказ")
             ->markdown("product-variation::notifications.order-user", [
                 'order' => $this->order,
-                'items' => $this->order->items()->with("product")->get(),
+                'items' => $this->order->items()->whereNull("order_item_set_id")->with("product")->with("orderItemSets")->get(),
             ]);
     }
 

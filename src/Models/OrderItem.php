@@ -66,6 +66,25 @@ class OrderItem extends Model
     }
 
     /**
+     * Сет этого дополнения
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function orderItemSet(){
+        return $this->belongsTo(\App\OrderItemSet::class,"order_item_set_id");
+    }
+
+    /**
+     * Сеты дополнений для позиции
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orderItemSets(){
+        return $this->hasMany(\App\OrderItemSet::class,"order_item_id","id");
+    }
+
+
+    /**
      * Формат итого.
      *
      * @return string

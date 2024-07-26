@@ -6,9 +6,9 @@ namespace PortedCheese\ProductVariation\Helpers;
 
 use App\Order;
 use App\OrderItem;
+use App\OrderItemSet;
 use App\OrderState;
 use App\ProductVariation;
-use Illuminate\Support\Facades\Log;
 
 class OrderActionsManager
 {
@@ -35,20 +35,20 @@ class OrderActionsManager
      */
     public function addVariationsToOrder(Order $order, array $variationsInfo)
     {
-        $ids = array_keys($variationsInfo);
-        $orderItems = OrderItem::query()
-            ->where("order_id", $order->id)
-            ->whereIn("variation_id", $ids)
-            ->get();
-        foreach ($orderItems as $orderItem) {
-            /**
-             * @var OrderItem $orderItem
-             */
-            $id = $orderItem->id;
-            $quantity = $variationsInfo[$id];
-            unset($variationsInfo[$id]);
-            $this->increaseOrderItemQuantity($orderItem, $quantity);
-        }
+//        $ids = array_keys($variationsInfo);
+//        $orderItems = OrderItem::query()
+//            ->where("order_id", $order->id)
+//            ->whereIn("variation_id", $ids)
+//            ->get();
+//        foreach ($orderItems as $orderItem) {
+//            /**
+//             * @var OrderItem $orderItem
+//             */
+//            $id = $orderItem->id;
+//            $quantity = $variationsInfo[$id];
+//            unset($variationsInfo[$id]);
+//            $this->increaseOrderItemQuantity($orderItem, $quantity);
+//        }
 
         foreach ($variationsInfo as $id => $quantity) {
             $this->addItemToOrder($order, $id, $quantity);
@@ -92,9 +92,10 @@ class OrderActionsManager
      * @param Order $order
      * @param $variation
      * @param int $quantity
+     * @param OrderItemSet $orderItemSet
      * @return bool|\Illuminate\Database\Eloquent\Model|OrderItem
      */
-    public function addItemToOrder(Order $order, $variation, $quantity = 1)
+    public function addItemToOrder(Order $order, $variation, int $quantity = 1, $itemSet = null) : OrderItem|bool
     {
         if (is_numeric($variation)) {
             try {
@@ -123,6 +124,10 @@ class OrderActionsManager
                 "variation_id" => $variation->id,
                 "specifications" =>  json_encode($specifications)
             ]);
+            if (isset($itemSet)){
+                $orderItem->orderItemSet()->associate($itemSet);
+                $orderItem->save();
+            }
         } catch (\Exception $exception) {
             return false;
         }
@@ -198,5 +203,68 @@ class OrderActionsManager
             $number .= mt_rand(0, 9);
         }
         return $number;
+    }
+
+    /**
+     * Добавить дополнения к заказу.
+     *
+     * @param Order $order
+     * @param array $addonVariationSetsInfo
+     * @return void
+     */
+    public function addAddonVariationSetsToOrder(Order $order, array $addonVariationSetsInfo)
+    {
+        $orderItems = $order->items()->whereNull('order_item_set_id')->get();
+
+        foreach ($orderItems as $orderItem){
+            if (isset($addonVariationSetsInfo[$orderItem->variation_id])){
+                foreach ($addonVariationSetsInfo[$orderItem->variation_id] as $key => $set){
+                    // создать сет и добавить дополнения
+
+                    $itemSet = $this->createAddonSet($orderItem);
+                    foreach ($set as $variation => $quantity){
+                        $this->addItemToOrder($order, $variation, $quantity, $itemSet);
+                    }
+                    $this->recalculateOrderTotal($order);
+                }
+            }
+        }
+    }
+
+    /**
+     * Создать заказ по корзине
+     *
+     * @param Order $order
+     * @param array $cartInfo
+     * @return void
+     */
+    public function makeOrderFromCart(Order $order, array $cartInfo){
+        foreach ($cartInfo as $cartItem){
+            $orderItem = $this->addItemToOrder($order, $cartItem->variation->id, $cartItem->quantity);
+            if (count($cartItem->addons)){
+                $orderItemSet = $this->createAddonSet($orderItem);
+                foreach ($cartItem->addons as $addonData){
+                    $this->addItemToOrder($order, $addonData->variation, $addonData->quantity, $orderItemSet);
+                }
+            }
+        }
+        $this->recalculateOrderTotal($order);
+    }
+
+    /**
+     * Создать сеть дополнений
+     *
+     * @param OrderItem $orderItem
+     * @return false|\Illuminate\Database\Eloquent\Model
+     */
+    protected function createAddonSet( OrderItem $orderItem){
+        try {
+            $set = $orderItem->orderItemSets()->create([ "variation_id" => $orderItem->variation->id]);
+            return $set;
+        }
+        catch (\Exception $exception) {
+            return false;
+        }
+
     }
 }

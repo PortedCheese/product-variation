@@ -2,10 +2,11 @@
     <div :class="showChoose? 'form-group variation-price':''" v-if="showChoose || specifications">
         <div class="variation-price__specifications" v-if="Object.keys(specifications).length">
             <choose-specification-component :available="specifications"
-                                            :chose="chose" @changeChoosing="changeChose"
+                                            :chose="chose" @changeChoosing="changeChoseAddon"
                                             :variations="variations"
                                             :current="this.variationData.specifications"
                                             :full-mode="showChoose"
+                                            :addon-mode="true"
             ></choose-specification-component>
         </div>
         <div v-if="variationData" class="variation-price__wrapper">
@@ -17,7 +18,7 @@
                 </div>
             </div>
             <div class="variation-price__prices">
-                <div class="rub-format variation-price__value">
+                <div class="rub-format variation-price__value_small">
                     <span class="rub-format__value">
                         <span class="rub-format__measurement" v-if="variationData.measurement">{{ variationData.short_measurement }}</span>
                       {{ variationData.human_price }}
@@ -56,16 +57,16 @@
                        v-model="chosenVariation"
                        :value="variation.id"
                        :disabled="variation.disabled_at"
-                       @change="setChosenVariation()"
+                       @change="$emit('change', chosenVariation)"
                        class="custom-control-input">
                 <label class="custom-control-label choose-variation__label"
-                      v-if="variation.disabled_at"
-                      :for="'customRadio' + variation.id">
+                       v-if="variation.disabled_at"
+                       :for="'customRadio' + variation.id">
                     <p class="mb-0">
                         {{ variation.description }}<br>
                         <span class="text-muted mr-2" v-for="spec in variation.specifications">{{ spec.value }}</span>
                     </p>
-                  <span class="choose-variation__prices">Нет в наличии</span>
+                    <span class="choose-variation__prices">Нет в наличии</span>
                 </label>
                 <label class="custom-control-label choose-variation__label"
                        v-else
@@ -97,139 +98,117 @@
 </template>
 
 <script>
-    import productVariationEventBus from '../category-product/categoryProductEventBus';
-    import ChooseSpecificationComponent from "./ChooseSpecificationComponent";
-    export default {
-        name: "ChooseProductVariationComponent",
-        components: {ChooseSpecificationComponent},
-        model: {
-            prop: "chosen",
-            event: "change"
+import ChooseSpecificationComponent from "./ChooseSpecificationComponent";
+
+export default {
+    name: "ChooseAddonVariationComponent",
+    components: {ChooseSpecificationComponent},
+    model: {
+        prop: "chosen",
+        event: "change"
+    },
+
+    props: {
+        variations: {
+            type: Array,
+            required: true
         },
 
-        props: {
-            variations: {
-                type: Array,
-                required: true
-            },
-
-            specifications: {
-                type: Object,
-                required: false
-            },
-
-            chosen: {
-                type: Number|String,
-                required: true
-            },
-
-            showChoose: {
-                type: Boolean,
-                default: true
-            },
-
-            pageMode: {
-                type: Boolean,
-                default: false
-            }
+        specifications: {
+            type: Object,
+            required: false
         },
 
-        data() {
-            return {
-                chosenVariation: "",
-                chose: [],
-            }
+        chosen: {
+            type: Number|String,
+            required: true
         },
 
-        created() {
-            this.chosenVariation = this.chosen;
-            this.setChosenVariation();
-        },
+        showChoose: {
+            type: Boolean,
+            default: true
+        }
+    },
 
-        mounted() {
-            // first load: send chosen product specs to addon's ChooseSpecification
-            if (this.pageMode){
-                productVariationEventBus.$on("get-choosing-product-spec",this.sendProductSpecs());
-            }
-        },
+    data() {
+        return {
+            chosenVariation: "",
+            chose: [],
+        }
+    },
 
-        computed: {
-            variationData() {
-                let variation = false;
-                for (let item in this.variations) {
-                    if (this.variations.hasOwnProperty(item)) {
-                        if (this.variations[item].id === this.chosenVariation) {
-                            variation = this.variations[item];
-                        }
+    created() {
+        this.chosenVariation = this.chosen;
+        this.setChosenAddonVariation();
+    },
+
+
+    computed: {
+        variationData() {
+            let variation = false;
+            for (let item in this.variations) {
+                if (this.variations.hasOwnProperty(item)) {
+                    if (this.variations[item].id === this.chosenVariation) {
+                        variation = this.variations[item];
                     }
                 }
-                return variation;
-            },
-            specVariations() {
-                let specVariations = [];
-                if (this.specifications && this.chose.length) {
-                    for (let item of this.variations) {
-                        let push = 0;
-                        if (item.specifications){
-                            for (let spec of item.specifications) {
-                                for (let ch of this.chose) {
-                                    if (spec.id === ch.id) {
-                                        push++;
-                                        break;
-                                    }
+            }
+            return variation;
+        },
+        specVariations() {
+            let specVariations = [];
+            if (this.specifications && this.chose.length) {
+                for (let item of this.variations) {
+                    let push = 0;
+                    if (item.specifications){
+                        for (let spec of item.specifications) {
+                            for (let ch of this.chose) {
+                                if (spec.id === ch.id) {
+                                    push++;
+                                    break;
                                 }
                             }
-
                         }
-                        if (push == this.chose.length)
-                            specVariations.push(item)
+
                     }
+                    if (push == this.chose.length)
+                        specVariations.push(item)
                 }
-                else
-                    specVariations =  this.variations;
-                return specVariations;
+            }
+            else
+                specVariations =  this.variations;
+            return specVariations;
+        }
+    },
+
+    methods: {
+        changeChoseAddon(data) {
+            if (data['addonMode']) {
+                this.chose = data["spec"];
+                this.setChosenAddonVariation(true);
             }
         },
 
-        methods: {
-            changeChose(data) {
-                this.chose = data["spec"];
-                this.setChosenVariation(true);
-            },
-            sendProductSpecs(){
-                // send chosen product spec to addon's ChooseSpecification
-                if (this.pageMode && this.variationData) {
-                    productVariationEventBus.$emit("change-choosing-product-spec", this.variationData.specifications ? this.variationData.specifications: []);
-                }
-            },
-            setChosenVariation(spec = false){
-                // chosen by input option
-                if (!spec && this.chosenVariation){
-                    this.$emit("change", this.chosenVariation);
-                    this.sendProductSpecs();
-                }
-                // chosen by btns
-                if (spec && ! this.specVariations.length)
-                {
-                    this.chosenVariation = null
-                    this.$emit("change", this.chosenVariation);
-                    this.sendProductSpecs();
-                }
-                if (spec || (! this.chosenVariation && this.specVariations.length)) {
-                    for (let item in this.specVariations) {
-                        if (this.specVariations.hasOwnProperty(item)) {
-                            if (! this.specVariations[item].disabled_at) {
-                                this.chosenVariation = this.specVariations[item].id;
-                                this.$emit("change", this.chosenVariation);
-                                this.sendProductSpecs();
-                                break;
-                            }
+        setChosenAddonVariation(spec = false){
+            if (spec && ! this.specVariations.length)
+            {
+                this.chosenVariation = null
+                this.$emit("change", this.chosenVariation);
+            }
+            if (spec || (! this.chosenVariation && this.specVariations.length)) {
+                for (let item in this.specVariations) {
+                    if (this.specVariations.hasOwnProperty(item)) {
+                        if (! this.specVariations[item].disabled_at) {
+                            this.chosenVariation = this.specVariations[item].id;
+                            this.$emit("change", this.chosenVariation);
+                            break;
                         }
                     }
                 }
             }
         }
     }
+}
 </script>
 
 <style scoped>

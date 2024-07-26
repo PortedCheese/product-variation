@@ -76,6 +76,16 @@ class Order extends Model
     }
 
     /**
+     * Дополнения к позициям заказа
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function addons()
+    {
+        return $this->hasMany(\App\OrderItem::class)->whereNotNull('order_item_set_id');
+    }
+
+    /**
      * Route notifications for the mail channel.
      *
      * @param $notification

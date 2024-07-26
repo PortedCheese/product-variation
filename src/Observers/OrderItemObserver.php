@@ -32,6 +32,20 @@ class OrderItemObserver
     }
 
     /**
+     * Удалить сеты дополнений
+     *
+     * @param OrderItem $orderItem
+     * @return void
+     */
+    public function deleting(OrderItem $orderItem){
+        if ($sets = $orderItem->orderItemSets){
+            foreach ($sets as $set){
+                $set->delete();
+            }
+        }
+    }
+
+    /**
      * Добавить измерение для вариации.
      *
      * @param OrderItem $orderItem

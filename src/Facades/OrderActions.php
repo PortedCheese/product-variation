@@ -12,6 +12,8 @@ use PortedCheese\ProductVariation\Helpers\OrderActionsManager;
 /**
  * @method static recalculateOrderTotal(Order $order)
  * @method static addVariationsToOrder(Order $order, array $variationsInfo)
+ * @method static addAddonVariationSetsToOrder(Order $order, $variation, $quantity = 1)
+ * @method static makeOrderFromCart(Order $order, array $cartInfo)
  * @method static increaseOrderItemQuantity(OrderItem $orderItem, int $quantity)
  * @method static decreaseOrderItemQuantity(OrderItem $orderItem, int $quantity)
  * @method static bool|Model|OrderItem addItemToOrder(Order $order, $variation, $quantity = 1)

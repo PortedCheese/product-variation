@@ -66,6 +66,7 @@
                                             <small class="text-muted mr-2">{{ $spec }}: {{ $value }}</small>
                                         @endforeach
                                     @endisset
+
                                 </td>
                                 <td>{{ $item->sku }}</td>
                                 <td>{{ $item->price }}</td>
@@ -73,6 +74,54 @@
                                 <td>{{ $item->total }}</td>
                                 <td>{{ $item->description }}</td>
                             </tr>
+                            @if (count($item->orderItemSets) >0)
+                                @foreach($item->orderItemSets as $set)
+                                    <tr class="bg-light">
+                                        <td colspan="6" class="text-muted border-light">Комплект дополнений:</td>
+                                    </tr>
+
+                                    @foreach($set->addons as $addon)
+                                        <tr class="bg-light">
+                                            <td class="border-white">
+                                                <a href="{{ route("admin.products.show", ["product" => $addon->product]) }}" target="_blank">
+                                                    {{ $addon->product->title }}
+                                                </a>
+                                                <br>
+                                                @if (isset($addon->variation->cover))
+                                                    @pic([
+                                                    "image" => $addon->variation->cover,
+                                                    "template" => "small",
+                                                    "imgClass" => "img-thumbnail",
+                                                    "grid" => [
+                                                    "product-show-thumb" => 992,
+                                                    ],
+                                                    ])
+                                                @elseif ($addon->product->cover)
+                                                    @pic([
+                                                    "image" => $addon->product->cover,
+                                                    "template" => "small",
+                                                    "imgClass" => "img-thumbnail",
+                                                    "grid" => [
+                                                    "product-show-thumb" => 992,
+                                                    ],
+                                                    ])
+                                                @endif
+                                                @isset($addon->specificationsArray)
+                                                    @foreach($addon->specificationsArray as $spec => $value)
+                                                        <small class="text-muted mr-2">{{ $spec }}: {{ $value }}</small>
+                                                    @endforeach
+                                                @endisset
+
+                                            </td>
+                                            <td class="border-white">{{ $addon->sku }}</td>
+                                            <td class="border-white">{{ $addon->price }}</td>
+                                            <td class="border-white">{{ $addon->quantity }} {{ $addon->short_measurement }}</td>
+                                            <td class="border-white">{{ $addon->total }}</td>
+                                            <td class="border-white">{{ $addon->description }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endforeach
+                            @endif
                         @endforeach
                         </tbody>
                         <tfooter>

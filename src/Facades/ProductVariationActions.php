@@ -12,6 +12,9 @@ use PortedCheese\ProductVariation\Helpers\ProductVariationActionsManager;
 
 /**
  * @method static Collection|AnonymousResourceCollection getVariationsByProduct(Product $product, $getCollection = false)
+ * @method static mixed getVariationsByAddon(Product $product, Product $parent)
+ * @method static Mixed getVariationsSpecificationsByProduct(Product $product)
+ * @method static Mixed getVariationsSpecificationsByAddon(Product $product, Product $parent)
  * @method static mixed getVariationSpecificationsArray(ProductVariation $variation)
  * @method static clearProductVariationsCache(Product $product)
  * @method static clearPricesCache(Category $category)

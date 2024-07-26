@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Order;
 use App\OrderState;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
@@ -56,19 +57,18 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Order  $order
-     * @return \Illuminate\Http\Response
+     * @param Order $order
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
      */
     public function show(Order $order)
     {
-        $items = $order->items()->with("product")->get();
-
+        $items = $order->items()->whereNull("order_item_set_id")->with("product")->with("orderItemSets")->get();
         $states = OrderState::query()
             ->select("id", "title")
             ->orderBy("title")
             ->get();
 
-        return view("product-variation::admin.orders.show", compact("order", "items", "states"));
+        return view("product-variation::admin.orders.show", compact("order", "items","states"));
     }
 
     /**

@@ -13,5 +13,8 @@ class ProductVariationSpecificationUpdate
         foreach ($category->products()->get() as $product){
             ProductVariationActions::clearProductVariationsCache($product);
         }
+        foreach ($category->addons()->get() as $product){
+            ProductVariationActions::clearProductVariationsCache($product);
+        }
     }
 }

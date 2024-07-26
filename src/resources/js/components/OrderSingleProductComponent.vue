@@ -1,6 +1,6 @@
 <template>
     <form>
-        <product-variations :specifications="specifications" :variations="variations" v-model="chosenVariation"></product-variations>
+        <product-variations :specifications="specifications" :variations="variations" v-model="chosenVariation" :page-mode="true"></product-variations>
 
         <div class="btn-group"
              role="group">
@@ -25,7 +25,7 @@
                                 </span>
                             </span>
                         </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" @click="closeModal" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -45,6 +45,31 @@
                                     <span>{{ message }}</span>
                                     <br>
                                 </template>
+                            </div>
+                            <div class="form-group">
+
+                                <p v-if="Object.keys(addonVariations).length">Дополнения:</p>
+                                <div class="d-flex flex-row flex-wrap">
+                                    <div class="card mr-2 mb-2" v-for="(item,index) in addonVariations">
+                                        <div class="card-header p-1">
+                                            {{ item.description }}
+                                            <button type="button" class="close" @click="removeThisAddon(item)">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="card-body p-1">
+                                            <p class="mb-2">{{ item.human_price }}
+                                                <svg class="rub-format__ico">
+                                                    <use xlink:href="#catalog-rub"></use>
+                                                </svg>
+                                                {{ item.short_measurement }}
+                                            </p>
+                                            <p class="mb-2 text-muted">
+                                                <template v-for="(spec) in item.specifications">{{ spec.title }} : {{ spec.value }}</template>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="form-group">
@@ -100,12 +125,12 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button"
+                        <button type="button" @click="closeModal"
                                 class="btn btn-secondary"
                                 data-dismiss="modal">
-                            Отмена
+                            <template v-if="! this.messages.length">Отмена</template><template v-if="this.messages.length">Закрыть</template>
                         </button>
-                        <button type="button"
+                        <button v-if="! this.messages.length && ! this.errors.length" type="button"
                                 @click="sendOrder"
                                 :disabled="! orderAvailable || loading"
                                 class="btn btn-primary">
@@ -119,6 +144,7 @@
 </template>
 
 <script>
+    import productVariationEventBus from '../category-product/categoryProductEventBus';
     import Variations from "./ChooseProductVariationComponent";
 
     export default {
@@ -151,14 +177,20 @@
             return {
                 loading: false,
                 chosenVariation: "",
+                addonVariations: [],
                 messages: [],
                 errors: [],
-                formData: {}
+                formData: {},
             }
         },
 
         created() {
             this.initFormData();
+        },
+
+        mounted() {
+            productVariationEventBus.$on("change-order-addons", this.changeOrderAddonsData);
+            productVariationEventBus.$on("remove-order-addons", this.removeOrderAddonsData);
         },
 
         computed: {
@@ -189,12 +221,24 @@
         },
 
         methods: {
+            removeThisAddon(data){
+                productVariationEventBus.$emit("remove-this-addon", data);
+            },
+            changeOrderAddonsData(data){
+                this.addonVariations.push(data);
+            },
+            removeOrderAddonsData(data){
+                this.addonVariations.splice(this.addonVariations.indexOf(data),1);
+            },
             initFormData() {
+                this.messages = [];
+                this.errors = [];
                 this.formData = {
                     name: "",
                     email: "",
                     phone: "",
                     comment: "",
+                    addons: [],
                     privacy_policy: true
                 };
                 if (this.user) {
@@ -203,10 +247,17 @@
                     this.formData.phone = this.user.phone;
                 }
             },
+            closeModal(){
+                this.errors = [];
+                this.messages = [];
+            },
             sendOrder() {
                 this.loading = true;
                 this.errors = [];
                 this.messages = [];
+                for (let el of this.addonVariations){
+                    this.formData.addons.push(el.id);
+                }
                 axios
                     .put(this.variationData.orderSingleUrl, this.formData)
                     .then(response => {
@@ -214,7 +265,6 @@
                         if (result.success) {
                             $("#orderProductForm").trigger("reset");
                             this.initFormData();
-                            $("#newVariationModal").modal("hide");
                             this.messages.push(result.message);
                         }
                         else {

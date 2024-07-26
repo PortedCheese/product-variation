@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use PortedCheese\CategoryProduct\Facades\CategoryActions;
 use PortedCheese\CategoryProduct\Facades\ProductActions;
 
 class ProductVariationActionsManager
@@ -33,6 +35,57 @@ class ProductVariationActionsManager
         $class = config("product-variation.productVariationResource");
         return $class::collection($collection);
     }
+
+    /**
+     *
+     * @param Product $product
+     * @param Product $parent
+     * @return mixed
+     */
+    public function getVariationsByAddon(Product $product, Product $parent)
+    {
+        $key = "product-variation-actions-getVariationsByAddon:{$product->id}-{$parent->id}";
+        return Cache::rememberForever($key, function() use ($product, $parent){
+            $productVariations = $this->getVariationsByProduct($product);
+            $availableSpecsArray = $this->getVariationsSpecificationsByAddon($product,$parent);
+            $availableSpecs = [];
+            foreach ($availableSpecsArray as  $array ){
+                foreach ($array as  $item ){
+                    $availableSpecs[] = $item;
+                }
+            }
+            $flag = 0;
+            $count = 0;
+            $countSpec = 0;
+            foreach ($productVariations as $key => $variation){
+                foreach ($variation->specifications as $spec){
+                    foreach ($availableSpecs as $available){
+
+                        if ($spec->specification_id === $available["specification_id"]){
+                            $count ++;
+                            if ($spec->value === $available["value"]) {
+                                $countSpec ++;
+                                break;
+                            }
+                        }
+                    }
+                    if (($count === 0 && $countSpec === 0) || $countSpec){
+                        $countSpec = 0;
+                        $count = 0;
+                        $flag ++;
+                    }
+                }
+                if ($flag < count($variation->specifications)){
+                    $productVariations->forget($key);
+                }
+                $flag = 0;
+                $count = 0;
+                $countSpec = 0;
+            }
+            return  $productVariations;
+        });
+    }
+
 
     /**
      * Все характеристики вариаций данного продукта
@@ -70,6 +123,37 @@ class ProductVariationActionsManager
         });
 
         return $collection;
+    }
+
+    /**
+     * Пересечения характеристик вариаций Дополнения для данного Товара
+     *
+     * @param Product $product
+     * @param Product $parent
+     * @return mixed
+     *
+     */
+    public function getVariationsSpecificationsByAddon(Product $product, Product $parent)
+    {
+        $key = "product-variation-actions-getVariationsSpecificationsByAddon:{$product->id}-{$parent->id}";
+        return Cache::rememberForever($key, function() use ($product, $parent){
+            $productCollection =  $this->getVariationsSpecificationsByProduct($product);
+            $parentCollection =  $this->getVariationsSpecificationsByProduct($parent);
+
+            $intersectKeys = array_intersect_key($parentCollection, $productCollection);
+            $diff = array_diff_key($productCollection, $parentCollection);
+            $intersect = [];
+            foreach ($intersectKeys as $parentItemKey => $parentItemValues){
+                foreach ($parentItemValues as $parentItem){
+                    foreach ($productCollection[$parentItemKey] as $productItem){
+                        if ($productItem["value"] === $parentItem["value"] && $productItem["specification_id"] === $parentItem["specification_id"] ){
+                            $intersect[$parentItemKey][] = $productItem;
+                        }
+                    }
+                }
+            }
+            return  array_merge($intersect, $diff);
+        });
     }
 
     /**
@@ -124,6 +208,34 @@ class ProductVariationActionsManager
         }
         $category = $product->category;
         $this->clearPricesCache($category);
+
+        // кэш дополнений для товаров с данным допом
+        if ($product->addonType){
+            $categoriesIds = CategoryActions::getCategoryChildren($category, true);
+            $this->clearAddonsCache($product, $categoriesIds);
+        }
+        else{
+            // кэш возможных дополнений для этого товара
+            $categoriesIds = CategoryActions::getCategoryParentsIds($category);
+            $this->clearProductAddonsCache($product, $categoriesIds);
+        }
+
+    }
+
+    protected  function  clearProductAddonsCache(Product $product, $categoriesIds){
+        $addons = Product::query()->whereNotNull('addon_type_id')->whereIn('category_id',$categoriesIds)->get();
+        foreach ($addons as $addon){
+            Cache::forget("product-variation-actions-getVariationsSpecificationsByAddon:{$addon->id}-{$product->id}");
+            Cache::forget("product-variation-actions-getVariationsByAddon:{$addon->id}-{$product->id}");
+        }
+
+    }
+    protected  function  clearAddonsCache(Product $product, $categoriesIds){
+        $products = Product::query()->whereNull('addon_type_id')->whereIn('category_id',$categoriesIds)->get();
+        foreach ($products as $parent){
+            Cache::forget("product-variation-actions-getVariationsSpecificationsByAddon:{$product->id}-{$parent->id}");
+            Cache::forget("product-variation-actions-getVariationsByAddon:{$product->id}-{$parent->id}");
+        }
     }
 
     /**

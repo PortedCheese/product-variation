@@ -41,7 +41,7 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
      * @var array
      */
     protected $models = [
-        "ProductVariation", "OrderState", "Order", "OrderItem", "Measurement",
+        "ProductVariation", "OrderState", "Order", "OrderItem", "OrderItemSet", "Measurement",
     ];
 
     /**
@@ -87,6 +87,7 @@ class ProductVariationMakeCommand extends BaseConfigModelCommand
         ],
         'app' => [
             "order-single" => "OrderSingleProductComponent",
+            "order-addon" => "OrderAddonComponent",
             "teaser-price" => "ProductTeaserPriceComponent",
         ],
     ];
