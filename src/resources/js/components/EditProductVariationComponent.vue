@@ -1,12 +1,10 @@
 <template>
-    <div class="modal fade" id="editVariationModal" tabindex="-1" aria-labelledby="editVariationModalLabel" aria-hidden="true" >
+    <div class="modal fade" id="editVariationModal" tabindex="-1" aria-labelledby="editVariationModalLabel" aria-hidden="true" onclose="document.getElementById('spec').setAttribute('selected')" >
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editVariationModalLabel">Редактировать вариацию</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form>
@@ -30,10 +28,12 @@
                         ></add-new-variation-specification>
 
                         <div class="form-group">
-                            <a data-toggle="collapse" href="#collapseProductImages" role="button" aria-expanded="false">
+                            <button class="btn btn-link p-0"
+                                    data-bs-toggle="collapse" data-bs-target="#collapseProductImagesEdit"
+                                    role="button" aria-expanded="false">
                                 Изображение для вариации
-                            </a>
-                            <div class="collapse mt-3" id="collapseProductImages">
+                            </button>
+                            <div class="collapse mt-3" id="collapseProductImagesEdit">
                                 <div class="card card-body">
                                     <div>
                                         <input  type="radio"
@@ -132,7 +132,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
                     <button type="button"
                             class="btn btn-primary"
                             @click="updateVariation"

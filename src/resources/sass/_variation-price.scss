@@ -10,7 +10,7 @@
     display: inline-block;
     font-size: 1.125rem;
     font-weight: $font-weight-bolder;
-    margin-right: $grid-gutter-width / 2;
+    margin-right: $grid-gutter-width * .5;
     &_thin {
       font-size: .875rem;
       font-weight: $font-weight-normal;
@@ -48,7 +48,7 @@
       cursor: not-allowed;
       pointer-events: none;
     }
-    @include hover() {
+    &:hover {
       text-decoration: none;
     }
   }

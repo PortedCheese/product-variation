@@ -2,8 +2,8 @@
     <div class="card-header">
         <button type="button"
                 class="btn btn-success"
-                data-toggle="modal"
-                data-target="#newVariationModal">
+                data-bs-toggle="modal"
+                data-bs-target="#newVariationModal">
             Добавить вариацию
         </button>
 
@@ -16,9 +16,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="newVariationModalLabel">Добавить вариацию</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body">
@@ -42,9 +40,11 @@
                             ></add-new-variation-specification>
 
                             <div class="form-group">
-                                <a data-toggle="collapse" href="#collapseProductImages" role="button" aria-expanded="false">
+                                <button class="btn btn-link p-0"
+                                        data-bs-toggle="collapse" data-bs-target="#collapseProductImages"
+                                        type="button" role="button" aria-expanded="false">
                                     Изображение для вариации
-                                </a>
+                                </button>
                                 <div class="collapse mt-3" id="collapseProductImages">
                                     <div class="card card-body">
                                         <div>
@@ -142,7 +142,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
                         <button type="button"
                                 @click="postNewVariation"
                                 :disabled="loading || ! checkValues"

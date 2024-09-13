@@ -2,23 +2,23 @@
     <div v-if="this.available && this.variations.length">
         <a v-if="!this.fullMode && this.variations" href="#" role="button"
            :id="'#dropdownTeaser'+this.variations[0].product_id"
-           data-toggle="dropdown"
+           data-bs-toggle="dropdown"
            aria-haspopup="true" aria-expanded="false">
             Доступные параметры
         </a>
-        <div :class="!this.fullMode && this.variations? 'dropdown-menu':'form-row' "
+        <div :class="!this.fullMode && this.variations? 'dropdown-menu px-2':'row g-0' "
              :aria-labelledby="'dropdownTeaser'+this.variations[0].product_id">
             <input name type="hidden" id="specInput" v-model="chosenSpec">
-            <div class="form-group col-12" v-for="(item, index) in this.available">
+            <div class="col-12" v-for="(item, index) in this.available">
                 <label><small>{{  index }}</small></label>
                 <button v-if="variations && variations.length >1 && fullMode & !addonMode"
                         type="button"
-                        class="close"
-                        @click="resetChooseSpec(item[0].specification_id)">&times;</button>
+                        class="btn btn-sm btn-close my-2 p-0 d-inline-flex"
+                        @click="resetChooseSpec(item[0].specification_id)"></button>
                 <br>
                 <template v-for="obj in item">
                     <button v-if="" type="button"
-                            class="btn btn-sm mr-2 mb-2"
+                            class="btn btn-sm me-2 mb-2"
                             :class="checkPrimaryActive(obj)"
                             :disabled="checkAvailable(obj)"
                             @click="btnClick(obj)"

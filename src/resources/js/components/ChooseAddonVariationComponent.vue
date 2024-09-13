@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div v-if="variationData.specifications" class="variation-price__about">
-                <span class="text-muted mr-2" v-for="spec in variationData.specifications">{{ spec.value }}</span>
+                <span class="text-muted me-2" v-for="spec in variationData.specifications">{{ spec.value }}</span>
             </div>
         </div>
 
@@ -64,7 +64,7 @@
                        :for="'customRadio' + variation.id">
                     <p class="mb-0">
                         {{ variation.description }}<br>
-                        <span class="text-muted mr-2" v-for="spec in variation.specifications">{{ spec.value }}</span>
+                        <span class="text-muted me-2" v-for="spec in variation.specifications">{{ spec.value }}</span>
                     </p>
                     <span class="choose-variation__prices">Нет в наличии</span>
                 </label>
@@ -73,7 +73,7 @@
                        :for="'customRadio' + variation.id">
                     <p class="mb-0">
                         {{ variation.description }}<br>
-                        <span class="text-muted mr-2" v-for="spec in variation.specifications">{{ spec.value }}</span>
+                        <span class="text-muted me-2" v-for="spec in variation.specifications">{{ spec.value }}</span>
                     </p>
                     <span class="rub-format choose-variation__value">
                         <span class="rub-format__value">

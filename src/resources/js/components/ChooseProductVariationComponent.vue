@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div v-if="variationData.specifications" class="variation-price__about">
-                <span class="text-muted mr-2" v-for="spec in variationData.specifications">{{ spec.value }}</span>
+                <span class="text-muted me-2" v-for="spec in variationData.specifications">{{ spec.value }}</span>
             </div>
         </div>
 
@@ -48,7 +48,7 @@
         </div>
 
         <div class="choose-variation" v-if="showChoose && specVariations.length > 1 && variationData">
-            <div class="сustom-control custom-radio choose-variation__item"
+            <div class="form-check choose-variation__item"
                  v-for="variation in specVariations">
                 <input type="radio"
                        :id="'customRadio' + variation.id"
@@ -57,22 +57,22 @@
                        :value="variation.id"
                        :disabled="variation.disabled_at"
                        @change="setChosenVariation()"
-                       class="custom-control-input">
-                <label class="custom-control-label choose-variation__label"
+                       class="form-check-input">
+                <label class="form-check-label choose-variation__label"
                       v-if="variation.disabled_at"
                       :for="'customRadio' + variation.id">
                     <p class="mb-0">
                         {{ variation.description }}<br>
-                        <span class="text-muted mr-2" v-for="spec in variation.specifications">{{ spec.value }}</span>
+                        <span class="text-muted me-2" v-for="spec in variation.specifications">{{ spec.value }}</span>
                     </p>
                   <span class="choose-variation__prices">Нет в наличии</span>
                 </label>
-                <label class="custom-control-label choose-variation__label"
+                <label class="form-check-label choose-variation__label"
                        v-else
                        :for="'customRadio' + variation.id">
                     <p class="mb-0">
                         {{ variation.description }}<br>
-                        <span class="text-muted mr-2" v-for="spec in variation.specifications">{{ spec.value }}</span>
+                        <span class="text-muted me-2" v-for="spec in variation.specifications">{{ spec.value }}</span>
                     </p>
                     <span class="rub-format choose-variation__value">
                         <span class="rub-format__value">

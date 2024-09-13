@@ -20,7 +20,7 @@
                         <h5 class="modal-title d-flex flex-column" id="orderProductLabel">
                             <span>Заказать товар <span v-if="variationData">{{ variationData.description }}</span></span>
                             <span class="small text-muted" v-if="variationData.specifications">
-                                <span class="mr-2" v-for="(item,index) in variationData.specifications">
+                                <span class="me-2" v-for="(item,index) in variationData.specifications">
                                     {{ item.title }}: {{ item.value }}
                                 </span>
                             </span>
@@ -50,7 +50,7 @@
 
                                 <p v-if="Object.keys(addonVariations).length">Дополнения:</p>
                                 <div class="d-flex flex-row flex-wrap">
-                                    <div class="card mr-2 mb-2" v-for="(item,index) in addonVariations">
+                                    <div class="card me-2 mb-2" v-for="(item,index) in addonVariations">
                                         <div class="card-header p-1">
                                             {{ item.description }}
                                             <button type="button" class="close" @click="removeThisAddon(item)">

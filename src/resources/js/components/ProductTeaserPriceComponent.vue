@@ -1,5 +1,5 @@
 <template>
-    <div class="variation-price mr-0">
+    <div class="variation-price me-0">
         <product-variations :specifications="specifications" :variations="variations" v-model="chosenVariation" :show-choose="false"></product-variations>
 
         <div v-if="variationData && !specifications" class="variation-price__wrapper">

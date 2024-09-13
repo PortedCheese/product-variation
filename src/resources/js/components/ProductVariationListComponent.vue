@@ -33,8 +33,8 @@
                                      :src="item.product_image_url" style="width: 50px;"
                                      class="img-thumbnail">
                                 <span v-for="spec in item.specifications">
-                                    <span v-if="spec.code" class="badge mr-2" :style="{backgroundColor:spec.code}">{{ spec.value }}</span>
-                                    <span v-else class="small text-muted mr-2">{{ spec.value }}</span>
+                                    <span v-if="spec.code" class="badge me-2" :style="{backgroundColor:spec.code}">{{ spec.value }}</span>
+                                    <span v-else class="small text-muted me-2">{{ spec.value }}</span>
                                 </span>
                             </td>
                             <td>{{ item.full_measurement }}</td>
@@ -46,7 +46,7 @@
                             </td>
                             <td>
                                 <div role="toolbar" class="btn-toolbar">
-                                    <div class="btn-group mr-1">
+                                    <div class="btn-group me-1">
                                         <button type="button"
                                                 v-if="item.updateUrl"
                                                 @click="editVariation(item)"

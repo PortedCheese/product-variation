@@ -9,7 +9,7 @@
     <div class="col-12 mb-2">
         <div class="card">
             <div class="card-header">
-                <form class="form-inline" method="get">
+                <form class="d-inline d-xxl-flex" method="get">
                     <label class="sr-only" for="number">Номер</label>
                     <input type="text"
                            class="form-control mb-2 mr-sm-2"
@@ -106,8 +106,8 @@
                                                 @can("view", $item)
                                                     <button type="button"
                                                             class="btn btn-info"
-                                                            data-toggle="modal"
-                                                            data-target="#orderInfo{{ $item->id }}">
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#orderInfo{{ $item->id }}">
                                                         <i class="fas fa-info"></i>
                                                     </button>
                                                     <a href="{{ route('admin.orders.show', ['order' => $item]) }}" class="btn btn-dark">

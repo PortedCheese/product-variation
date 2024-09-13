@@ -16,8 +16,8 @@
 
                 <button type="button"
                         class="btn btn-info"
-                        data-toggle="modal"
-                        data-target="#orderInfo{{ $order->id }}">
+                        data-bs-toggle="modal"
+                        data-bs-target="#orderInfo{{ $order->id }}">
                     <i class="fas fa-info"></i>
                 </button>
             </div>

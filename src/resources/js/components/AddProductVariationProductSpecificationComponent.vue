@@ -1,8 +1,9 @@
 <template>
     <div class="form-group">
-        <a data-toggle="collapse" href="#collapseProductSpecifications" role="button" aria-expanded="false" aria-controls="collapseExample">
+        <button class="btn btn-link p-0" data-bs-toggle="collapse" data-bs-target="#collapseProductSpecifications"
+                type="button" role="button" aria-expanded="false" aria-controls="collapseProductSpecifications">
             Характеристики
-        </a>
+        </button>
         <div class="collapse" id="collapseProductSpecifications">
             <div class="card card-body">
                 <div class="input-group mb-3">
@@ -10,14 +11,13 @@
                             id="spec"
                             v-model="chosenSpecId"
                             class="form-control custom-select">
-                        <option value="">Выберите...</option>
+                        <option value="" selected>Выберите...</option>
                         <option v-for="item in available" :value="item.id"
                                 :disabled="disableCurrentSpec(item.id, item.title)">
                             {{ item.title }}
                         </option>
                     </select>
-                    <div class="input-group-append" v-if="chosenSpec">
-                        <select v-if="chosenSpec"
+                    <select v-if="chosenSpec"
                                 class="form-control custom-select"
                                 name="valuesList"
                                 :id="'value'+chosenSpecId"
@@ -27,16 +27,13 @@
                                 >
                                 {{ option.value }} {{ option.code ? "["+option.code+"]": "" }}
                             </option>
-                        </select>
-                    </div>
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-success"
+                    </select>
+                    <button class="btn btn-outline-success"
                                 :disabled="! chosenValueId"
                                 @click="addNewValue"
                                 type="button">
                             <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
+                    </button>
                 </div>
 
                 <div class="input-group mb-3" v-for="(item, index) in getValues" :key="index">
@@ -62,14 +59,12 @@
                            class="form-control"
                            placeholder="Код"
                            aria-label="Код">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-danger"
+
+                    <button class="btn btn-outline-danger"
                                 @click="removeValue(index)"
                                 type="button">
                             <i class="fas fa-minus"></i>
-                        </button>
-                    </div>
-
+                    </button>
                 </div>
 
 

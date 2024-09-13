@@ -5,7 +5,7 @@
         <div class="btn-group" role="group">
             <button v-if="!isAdded"
                 type="button"
-                    class="btn btn-sm  mr-2"
+                    class="btn btn-sm me-2"
                     :class="isDisable ? 'btn-outline-secondary' : 'btn-outline-primary'"
                     data-toggle="modal"
                     :disabled="chosenAddonVariation === '' || loading || isAdded || isDisable || toCart"

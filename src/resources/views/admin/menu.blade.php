@@ -7,8 +7,8 @@
     <li class="nav-item {{ $active ? " active" : "" }}">
         <a href="#"
            class="nav-link"
-           data-toggle="collapse"
-           data-target="#collapse-orders-menu"
+           data-bs-toggle="collapse"
+           data-bs-target="#collapse-orders-menu"
            aria-controls="#collapse-orders-menu"
            aria-expanded="{{ $active ? "true" : "false" }}">
             <i class="fas fa-cart-arrow-down"></i>
