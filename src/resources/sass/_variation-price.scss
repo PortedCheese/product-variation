@@ -2,6 +2,7 @@
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
+  position: relative;
   @include media-breakpoint-up(lg) {
     margin-right: $grid-gutter-width;
   }
