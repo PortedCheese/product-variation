@@ -6,9 +6,9 @@
              role="group">
             <button type="button"
                     class="btn btn-primary"
-                    data-toggle="modal"
+                    data-bs-toggle="modal"
                     :disabled="chosenVariation === '' || loading"
-                    data-target="#orderProduct">
+                    data-bs-target="#orderProduct">
                 Заказать
             </button>
         </div>
@@ -25,9 +25,7 @@
                                 </span>
                             </span>
                         </h5>
-                        <button type="button" @click="closeModal" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" @click="closeModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
 
@@ -50,12 +48,11 @@
 
                                 <p v-if="Object.keys(addonVariations).length">Дополнения:</p>
                                 <div class="d-flex flex-row flex-wrap">
-                                    <div class="card me-2 mb-2" v-for="(item,index) in addonVariations">
+                                    <div class="alert alert-light alert-dismissible fade show me-2 mb-2" v-for="(item,index) in addonVariations">
                                         <div class="card-header p-1">
                                             {{ item.description }}
-                                            <button type="button" class="close" @click="removeThisAddon(item)">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
+                                          <button type="button" class="btn-close" @click="removeThisAddon(item)" data-bs-dismiss="alert" aria-label="Close">
+                                          </button>
                                         </div>
                                         <div class="card-body p-1">
                                             <p class="mb-2">{{ item.human_price }}
@@ -127,7 +124,7 @@
                     <div class="modal-footer">
                         <button type="button" @click="closeModal"
                                 class="btn btn-secondary"
-                                data-dismiss="modal">
+                                data-bs-dismiss="modal">
                             <template v-if="! this.messages.length">Отмена</template><template v-if="this.messages.length">Закрыть</template>
                         </button>
                         <button v-if="! this.messages.length && ! this.errors.length" type="button"

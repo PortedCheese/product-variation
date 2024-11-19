@@ -1,5 +1,11 @@
 ## Versions
 
+###v3.0.2 bootstrap 5 fixes
+Проверить переопределение:
+- компонент OrderSingleProduct (btn-close, addons alerts)
+  Обновление:
+
+  php artisan vendor:publish --provider="PortedCheese\ProductVariation\ServiceProvider" --tag=public --force 
 ###v3.0.0 base 5 / bootstrap 5
 Проверить переопределение:
 - компоненты *
