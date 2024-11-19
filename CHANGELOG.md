@@ -1,11 +1,21 @@
 ## Versions
 
+###v3.0.3 order addon fixes
+Блокируем добавление / удаление дополнений в карточке товара после добавления в корзину (без удаления допов)
+Проверить переопределение:
+- компонент OrderAddon (событие change-cart -> blockAllAddons) 
+Обновление:
+
+    php artisan vendor:publish --provider="PortedCheese\ProductVariation\ServiceProvider" --tag=public --force
+
 ###v3.0.2 bootstrap 5 fixes
 Проверить переопределение:
 - компонент OrderSingleProduct (btn-close, addons alerts)
+
+
   Обновление:
 
-  php artisan vendor:publish --provider="PortedCheese\ProductVariation\ServiceProvider" --tag=public --force 
+    php artisan vendor:publish --provider="PortedCheese\ProductVariation\ServiceProvider" --tag=public --force 
 ###v3.0.0 base 5 / bootstrap 5
 Проверить переопределение:
 - компоненты *

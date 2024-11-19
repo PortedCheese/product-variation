@@ -2,13 +2,13 @@
     <form>
         <addon-variations :specifications="specifications" :variations="variations" v-model="chosenAddonVariation"></addon-variations>
 
-        <div class="btn-group" role="group">
+        <div class="btn-group" role="group" v-if="!toCart">
             <button v-if="!isAdded"
                 type="button"
                     class="btn btn-sm me-2"
                     :class="isDisable ? 'btn-outline-secondary' : 'btn-outline-primary'"
                     data-toggle="modal"
-                    :disabled="chosenAddonVariation === '' || loading || isAdded || isDisable || toCart"
+                    :disabled="chosenAddonVariation === '' || loading || isAdded || isDisable"
                     @click="orderAddonVariation()">
                 Добавить
             </button>
@@ -16,10 +16,13 @@
                 type="button"
                     class="btn btn-sm btn-outline-secondary"
                     data-toggle="modal"
-                    :disabled="chosenAddonVariation === '' || loading || (! orderAddonVariations.length) || ! isAdded || toCart"
+                    :disabled="chosenAddonVariation === '' || loading || (! orderAddonVariations.length) || ! isAdded"
                     @click="removeAddonVariation()">
                 Убрать
             </button>
+        </div>
+        <div class="btn-group" role="group" v-else>
+          <small v-if="isAdded">В корзине</small>
         </div>
 
     </form>
@@ -27,7 +30,7 @@
 
 <script>
 import productVariationEventBus from '../category-product/categoryProductEventBus';
-    import AddonVariations from "./ChooseAddonVariationComponent";
+import AddonVariations from "./ChooseAddonVariationComponent";
 
     export default {
         name: "OrderAddonComponent",
@@ -61,7 +64,7 @@ import productVariationEventBus from '../category-product/categoryProductEventBu
         mounted() {
             productVariationEventBus.$on("change-choosing-product-spec", this.changeProductSpecs);
             productVariationEventBus.$on("remove-this-addon", this.removeThisAddon);
-            this.$root.$on("change-cart", this.removeAllAddons)
+            productVariationEventBus.$on("change-cart", this.blockAllAddons)
             //productVariationEventBus.$on("change-choosing-product-variation", this.changeProductVariation);
         },
 
@@ -94,12 +97,8 @@ import productVariationEventBus from '../category-product/categoryProductEventBu
         },
 
         methods: {
-            removeAllAddons(){
+            blockAllAddons(){
                 this.toCart = true
-                if (! this.orderAddonVariations.length) return;
-                for (let item of this.orderAddonVariations){
-                    this.removeAddonVariation(item);
-                }
             },
             removeThisAddon(data) {
                 if (! this.orderAddonVariations.length) return;
