@@ -28,15 +28,15 @@
                         ></add-new-variation-specification>
 
                         <div class="form-group">
-                            <button class="btn btn-link p-0"
-                                    data-bs-toggle="collapse" data-bs-target="#collapseProductImagesEdit"
-                                    role="button" aria-expanded="false">
+                            <a class="btn btn-link p-0"
+                                    data-bs-toggle="collapse" href="#collapseProductImagesEdit"
+                                    role="button" aria-expanded="false" aria-controls="collapseProductImagesEdit">
                                 Изображение для вариации
-                            </button>
-                            <div class="collapse mt-3" id="collapseProductImagesEdit">
-                                <div class="card card-body">
+                            </a>
+                            <div class="collapse" id="collapseProductImagesEdit">
+                                <div class="card card-body mt-3">
                                     <div>
-                                        <input  type="radio"
+                                        <input type="radio"
                                                 name="product_image_id"
                                                 id="image"
                                                 :checked="! variation.product_image_id"
@@ -200,7 +200,7 @@
             },
             getSpecValues(data){
                 this.specValues = data["specValues"];
-                if (!this.specValues.length ) this.specIds = []
+                this.specIds = []
                 for (let i in this.specValues ){
                     this.specIds[i] = this.specValues[i].product_specification_id;
                 }

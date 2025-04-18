@@ -40,13 +40,13 @@
                             ></add-new-variation-specification>
 
                             <div class="form-group">
-                                <button class="btn btn-link p-0"
-                                        data-bs-toggle="collapse" data-bs-target="#collapseProductImages"
+                                <a class="btn btn-link p-0"
+                                        data-bs-toggle="collapse" href="#collapseProductImages"
                                         type="button" role="button" aria-expanded="false">
                                     Изображение для вариации
-                                </button>
-                                <div class="collapse mt-3" id="collapseProductImages">
-                                    <div class="card card-body">
+                                </a>
+                                <div class="collapse" id="collapseProductImages">
+                                    <div class="card card-body mt-3">
                                         <div>
                                             <input  type="radio"
                                                     name="product_image_id"
@@ -225,6 +225,7 @@
             },
             getSpecValues(data){
                 this.specValues = data["specValues"];
+                this.specIds = [];
                 for (let i in this.specValues ){
                     this.specIds[i] = this.specValues[i].product_specification_id;
                 }
