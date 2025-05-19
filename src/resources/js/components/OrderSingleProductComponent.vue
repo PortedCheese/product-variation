@@ -115,7 +115,7 @@
                                            id="privacy_policy">
                                   <label class="custom-control-label" for="privacy_policy">
                                   Я даю свое
-                                  <a href="#agreementModal" data-toggle="modal" data-target="#agreementModal">Согласие на обработку персональных данных</a> и принимаю условия
+                                  <a href="#agreementModal" data-bs-toggle="modal" data-bs-target="#agreementModal">Согласие на обработку персональных данных</a> и принимаю условия
                                     <a v-if="policyUrl" :href="policyUrl" target="_blank">Политики по обработке персональных данных</a>
                                     <span v-else>Политики по обработке персональных данных</span>
                                   </label>

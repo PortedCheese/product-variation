@@ -1,5 +1,8 @@
 ## Versions
-
+###v3.0.5-v3.0.6 policy
+    php artisan vendor:publish --provider="PortedCheese\ProductVariation\ServiceProvider" --tag=public --force
+###v3.0.4 fix
+    php artisan vendor:publish --provider="PortedCheese\ProductVariation\ServiceProvider" --tag=public --force
 ###v3.0.3 order addon fixes
 Блокируем добавление / удаление дополнений в карточке товара после добавления в корзину (без удаления допов)
 Проверить переопределение:
@@ -15,7 +18,7 @@
 
   Обновление:
 
-    php artisan vendor:publish --provider="PortedCheese\ProductVariation\ServiceProvider" --tag=public --force 
+   
 ###v3.0.0 base 5 / bootstrap 5
 Проверить переопределение:
 - компоненты *
