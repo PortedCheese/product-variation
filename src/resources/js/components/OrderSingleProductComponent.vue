@@ -113,10 +113,12 @@
                                            name="privacy_policy"
                                            class="custom-control-input"
                                            id="privacy_policy">
-                                    <label class="custom-control-label" for="privacy_policy">
-                                        <span v-if="policyUrl">Согласие с "<a :href="policyUrl" target="_blank">Политикой конфиденциальности</a>"</span>
-                                        <span v-else>Согласие с "Политикой конфиденциальности"</span>
-                                    </label>
+                                  <label class="custom-control-label" for="privacy_policy">
+                                  Я даю свое
+                                  <a href="#agreementModal" data-toggle="modal" data-target="#agreementModal">Согласие на обработку персональных данных</a> и принимаю условия
+                                    <a v-if="policyUrl" :href="policyUrl" target="_blank">Политики по обработке персональных данных</a>
+                                    <span v-else>Политики по обработке персональных данных</span>
+                                  </label>
                                 </div>
                             </div>
                         </form>

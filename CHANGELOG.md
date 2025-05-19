@@ -20,7 +20,7 @@
 Проверить переопределение:
 - компоненты *
 - scss: choose-variation, variation-price
-- admin views: menu, orders,index, orders.sjow, orders.includes.user-info-modal
+- admin views: menu, orders,index, orders.show, orders.includes.user-info-modal
 
 Обновление:
 
