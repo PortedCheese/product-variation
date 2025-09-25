@@ -3,6 +3,7 @@
     <div class="col-12">
         <order-single :variations="{{ json_encode(product_variation()->getVariationsByProduct($product)) }}"
                       :policy-url="{{ $policyRoute }}"
+                      company="{{ config('policy.company','') }}"
                       :user="{{ json_encode(product_variation()->getUserForVariation()) }}"
                       :specifications="{{ json_encode(product_variation()->getVariationsSpecificationsByProduct($product),JSON_FORCE_OBJECT) }}">
         </order-single>

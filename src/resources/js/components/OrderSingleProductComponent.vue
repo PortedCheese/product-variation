@@ -114,7 +114,7 @@
                                            class="custom-control-input"
                                            id="privacy_policy">
                                   <label class="custom-control-label" for="privacy_policy">
-                                  Я даю свое
+                                  Я даю <span v-if="company">{{ company }}</span>свое
                                   <a href="#agreementModal" data-bs-toggle="modal" data-bs-target="#agreementModal">Согласие на обработку персональных данных</a> и принимаю условия
                                     <a v-if="policyUrl" :href="policyUrl" target="_blank">Политики по обработке персональных данных</a>
                                     <span v-else>Политики по обработке персональных данных</span>
@@ -154,6 +154,10 @@
         },
 
         props: {
+            company:{
+              type: String,
+              required: false
+            },
             variations: {
                 type: Array,
                 required: true

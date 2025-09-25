@@ -1,5 +1,5 @@
 ## Versions
-###v3.0.5-v3.0.6 policy
+###v3.0.5-v3.0.8 policy & policy input company
     php artisan vendor:publish --provider="PortedCheese\ProductVariation\ServiceProvider" --tag=public --force
 ###v3.0.4 fix
     php artisan vendor:publish --provider="PortedCheese\ProductVariation\ServiceProvider" --tag=public --force
