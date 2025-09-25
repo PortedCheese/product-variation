@@ -108,7 +108,7 @@
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox"
-                                           checked
+                                           required
                                            v-model="formData.privacy_policy"
                                            name="privacy_policy"
                                            class="custom-control-input"
